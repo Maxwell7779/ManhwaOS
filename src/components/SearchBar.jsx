@@ -43,7 +43,7 @@ export default function SearchBar({ onOpenApp }) {
           <input
             ref={searchRef}
             className="floating-search-input"
-            placeholder="Search apps..."
+            placeholder="Search apps or manwha..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onKeyDown={(e) => {

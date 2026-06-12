@@ -27,7 +27,6 @@ export default function Dock({ windows, onOpenApp, onRestore, onFocus }) {
             onClick={() => handleClick(app.key)}
           >
             <span className="dock-icon-inner">{app.icon}</span>
-            <span className="dock-icon-label">{app.label}</span>
             <span className={`dock-dot${isOpen ? "" : " hidden"}`} />
           </button>
         );

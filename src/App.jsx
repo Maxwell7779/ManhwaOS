@@ -33,6 +33,73 @@ export default function App() {
   const nextId = useRef(1);
   const nextZ = useRef(100);
 
+  function findOpenPosition(appKey, width, height, existingWindows) {
+    const viewportWidth =
+      typeof window !== "undefined" ? window.innerWidth : 1280;
+    const viewportHeight =
+      typeof window !== "undefined" ? window.innerHeight : 760;
+
+    const clampX = (x) => Math.max(24, Math.min(x, viewportWidth - width - 24));
+    const clampY = (y) =>
+      Math.max(56, Math.min(y, viewportHeight - height - 56));
+
+    const centerX = clampX((viewportWidth - width) / 2);
+    const centerY = clampY((viewportHeight - height) / 2);
+
+    const keyOffsets = {
+      welcome: { dx: 0, dy: 0 },
+      clock: { dx: 260, dy: -120 },
+      manhwa: { dx: -260, dy: -10 },
+      about: { dx: 0, dy: 220 },
+    };
+
+    const initial = keyOffsets[appKey] || { dx: 0, dy: 0 };
+    const startX = clampX(centerX + initial.dx);
+    const startY = clampY(centerY + initial.dy);
+
+    const padding = 24;
+    const overlaps = (x, y, win) =>
+      !(
+        x + width + padding < win.x ||
+        x > win.x + win.width + padding ||
+        y + height + padding < win.y ||
+        y > win.y + win.height + padding
+      );
+
+    const isFree = (x, y) =>
+      !existingWindows.some((win) => overlaps(x, y, win));
+
+    if (isFree(startX, startY)) {
+      return { x: startX, y: startY };
+    }
+
+    const searchOffsets = [
+      { dx: 0, dy: 0 },
+      { dx: 0, dy: -120 },
+      { dx: 120, dy: 0 },
+      { dx: 0, dy: 120 },
+      { dx: -120, dy: 0 },
+      { dx: 120, dy: -120 },
+      { dx: -120, dy: -120 },
+      { dx: 120, dy: 120 },
+      { dx: -120, dy: 120 },
+      { dx: 0, dy: -240 },
+      { dx: 240, dy: 0 },
+      { dx: 0, dy: 240 },
+      { dx: -240, dy: 0 },
+    ];
+
+    for (const offset of searchOffsets) {
+      const x = clampX(centerX + offset.dx);
+      const y = clampY(centerY + offset.dy);
+      if (isFree(x, y)) {
+        return { x, y };
+      }
+    }
+
+    return { x: centerX, y: centerY };
+  }
+
   function openApp(appKey) {
     const existing = windows.find((w) => w.appKey === appKey && !w.minimized);
     if (existing) {
@@ -48,18 +115,12 @@ export default function App() {
     const def = APP_REGISTRY[appKey];
     const id = nextId.current++;
     const z = nextZ.current++;
-
-    const positions = {
-      welcome: { x: 60, y: 60 },
-      clock: { x: 580, y: 80 },
-      manhwa: { x: 1050, y: 180 },
-      about: { x: 560, y: 360 },
-    };
-
-    const pos = positions[appKey] || {
-      x: 80 + windows.length * 30,
-      y: 80 + windows.length * 30,
-    };
+    const pos = findOpenPosition(
+      appKey,
+      def.width,
+      def.height,
+      windows.filter((w) => !w.minimized),
+    );
 
     setWindows((prev) => [
       ...prev,
