@@ -1,122 +1,141 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useState, useRef, useEffect } from "react";
+import Taskbar from "./components/Taskbar";
+import Desktop from "./components/Desktop";
+import Window from "./components/Window";
+import Dock from "./components/Dock";
+import WelcomeApp from "./apps/Welcome";
+import ClockApp from "./apps/Clock";
+import ManhwaApp from "./apps/Manhwa";
+import AboutApp from "./apps/About";
+import "./App.css";
 
-function App() {
-  const [count, setCount] = useState(0)
+const APP_REGISTRY = {
+  welcome: {
+    title: "Welcome to ManhwaOS",
+    component: WelcomeApp,
+    width: 340,
+    height: 460,
+  },
+  clock: { title: "Clock", component: ClockApp, width: 220, height: 260 },
+  manhwa: {
+    title: "Read Manhwa",
+    component: ManhwaApp,
+    width: 320,
+    height: 320,
+  },
+  about: { title: "About", component: AboutApp, width: 300, height: 260 },
+};
+
+export default function App() {
+  const [windows, setWindows] = useState([]);
+  const nextId = useRef(1);
+  const nextZ = useRef(100);
+
+  function openApp(appKey) {
+    const existing = windows.find((w) => w.appKey === appKey && !w.minimized);
+    if (existing) {
+      focusWindow(existing.id);
+      return;
+    }
+    const minimized = windows.find((w) => w.appKey === appKey && w.minimized);
+    if (minimized) {
+      restoreWindow(minimized.id);
+      return;
+    }
+
+    const def = APP_REGISTRY[appKey];
+    const id = nextId.current++;
+    const z = nextZ.current++;
+
+    setWindows((prev) => [
+      ...prev,
+      {
+        id,
+        appKey,
+        title: def.title,
+        x: 80 + prev.length * 30,
+        y: 80 + prev.length * 30,
+        width: def.width,
+        height: def.height,
+        z,
+        minimized: false,
+        maximized: false,
+      },
+    ]);
+  }
+
+  function closeWindow(id) {
+    setWindows((prev) => prev.filter((w) => w.id !== id));
+  }
+
+  function minimizeWindow(id) {
+    setWindows((prev) =>
+      prev.map((w) => (w.id === id ? { ...w, minimized: true } : w)),
+    );
+  }
+
+  function restoreWindow(id) {
+    const z = nextZ.current++;
+    setWindows((prev) =>
+      prev.map((w) => (w.id === id ? { ...w, minimized: false, z } : w)),
+    );
+  }
+
+  function toggleMaximize(id) {
+    setWindows((prev) =>
+      prev.map((w) => (w.id === id ? { ...w, maximized: !w.maximized } : w)),
+    );
+  }
+
+  function focusWindow(id) {
+    const z = nextZ.current++;
+    setWindows((prev) => prev.map((w) => (w.id === id ? { ...w, z } : w)));
+  }
+
+  function updateWindow(id, changes) {
+    setWindows((prev) =>
+      prev.map((w) => (w.id === id ? { ...w, ...changes } : w)),
+    );
+  }
+
+  useEffect(() => {
+    openApp("welcome");
+    setTimeout(() => openApp("clock"), 150);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+    <div className="os-root">
+      <div className="wallpaper">
+        <img src="/download.jfif" alt="" draggable="false" />
+      </div>
+      <div className="wallpaper-overlay" />
+      <Taskbar />
+      <Desktop>
+        {windows.map((win) => {
+          if (win.minimized) return null;
+          const { component: AppComponent } = APP_REGISTRY[win.appKey];
+          return (
+            <Window
+              key={win.id}
+              win={win}
+              onClose={() => closeWindow(win.id)}
+              onMinimize={() => minimizeWindow(win.id)}
+              onToggleMaximize={() => toggleMaximize(win.id)}
+              onFocus={() => focusWindow(win.id)}
+              onUpdate={(changes) => updateWindow(win.id, changes)}
+            >
+              <AppComponent />
+            </Window>
+          );
+        })}
+      </Desktop>
+      <Dock
+        windows={windows}
+        onOpenApp={openApp}
+        onRestore={restoreWindow}
+        onFocus={focusWindow}
+      />
+    </div>
+  );
 }
-
-export default App
