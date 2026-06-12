@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Monoton&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=Monoton&family=Manga+Master+BB&display=swap");
 
 /* ── ROOT ── */
 .os-root {
@@ -6,7 +6,8 @@
   height: 100vh;
   overflow: hidden;
   position: relative;
-  font-family: "Inter", system-ui, sans-serif;
+  font-family:
+    "Manga Master BB", "Monoton", "Avenir Next Rounded", system-ui, sans-serif;
 }
 
 /* ── WALLPAPER ── */
@@ -21,13 +22,15 @@
   justify-content: center;
   overflow: hidden;
   z-index: 0;
+  background-position: left center;
   background: #0a0a1a;
 }
 .wallpaper img {
   transform: rotate(270deg);
-  height: 100vw;
-  width: 100vh;
+  height: 105vw;
+  width: 105vh;
   object-fit: cover;
+  object-position: 60% center;
   flex-shrink: 0;
 }
 
@@ -71,21 +74,27 @@
 
 .hero-title h1 {
   margin: 0;
-  font-family: "Avenir Next Rounded", system-ui, sans-serif;
+  font-family:
+    "Monoton", "Manga Master BB", "Avenir Next Rounded", system-ui, sans-serif;
   font-size: clamp(2.4rem, 8vw, 4rem);
-  color: rgba(255, 255, 255, 0.84);
+  color: #ffffff;
   letter-spacing: 0.18em;
-  text-shadow: 0 0 8px rgba(147, 112, 219, 0.1);
+  text-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.45),
+    0 0 16px rgba(0, 0, 0, 0.12);
 }
 
 .hero-title p {
   margin: 16px auto 0;
-  font-family: "Avenir Next Rounded", system-ui, sans-serif;
+  font-family: "Manga Master BB", "Avenir Next Rounded", system-ui, sans-serif;
   font-size: clamp(0.9rem, 2.5vw, 1rem);
-  color: rgba(255, 255, 255, 0.62);
+  color: #ffffff;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   line-height: 1.6;
+  text-shadow:
+    0 3px 14px rgba(0, 0, 0, 0.5),
+    0 0 10px rgba(0, 0, 0, 0.2);
 }
 /* ── TASKBAR — floating island ── */
 .taskbar {
@@ -327,6 +336,13 @@
 }
 
 /* ── WELCOME APP ── */
+.welcome-app,
+.clock-app,
+.manhwa-app,
+.about-app {
+  font-family: "IBM Plex Sans", "Inter", system-ui, sans-serif;
+}
+
 .welcome-app {
   padding: 20px 16px;
   display: flex;
@@ -799,6 +815,27 @@
     grid-template-columns: 1fr;
   }
 }
+
+@media (max-width: 768px) {
+  .hero-title {
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .hero-title > div {
+    width: min(100%, 90vw);
+    max-width: 540px;
+    padding: 18px 20px;
+    gap: 16px;
+  }
+
+  .hero-title h1,
+  .hero-title p {
+    margin: 0;
+  }
+}
+
 /* ── SEARCH BAR ── */
 .tb-search-wrap {
   position: relative;
@@ -806,6 +843,7 @@
   display: flex;
   justify-content: center;
   max-width: 320px;
+  margin: 0 18px;
 }
 .tb-search-bar {
   display: flex;
@@ -878,6 +916,94 @@
   color: rgba(255, 255, 255, 0.95);
 }
 .tb-search-empty {
+  padding: 12px 14px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.25);
+  text-align: center;
+}
+
+/* ── FLOATING SEARCH ── */
+.floating-search-wrap {
+  position: fixed;
+  top: 76px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10001;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.floating-search-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(10, 12, 30, 0.36);
+  backdrop-filter: blur(18px) saturate(120%);
+  -webkit-backdrop-filter: blur(18px) saturate(120%);
+  border: 0.5px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  padding: 8px 14px;
+  width: 280px;
+  cursor: text;
+  transition:
+    width 0.2s,
+    background 0.15s,
+    transform 0.15s;
+}
+.floating-search-bar.open {
+  width: 340px;
+  background: rgba(10, 12, 30, 0.4);
+  border-color: rgba(147, 112, 219, 0.4);
+}
+.floating-search-placeholder {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.3);
+  pointer-events: none;
+}
+.floating-search-input {
+  background: none;
+  border: none;
+  outline: none;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 12px;
+  width: 100%;
+  font-family: inherit;
+}
+.floating-search-input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+.floating-search-dropdown {
+  margin-top: 6px;
+  width: 320px;
+  background: rgba(10, 12, 32, 0.85);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  border: 0.5px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6);
+}
+.floating-search-result {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 14px;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 12px;
+  text-decoration: none;
+  background: none;
+  border: none;
+  width: 100%;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.12s;
+  text-align: left;
+}
+.floating-search-result:hover {
+  background: rgba(147, 112, 219, 0.15);
+  color: rgba(255, 255, 255, 0.95);
+}
+.floating-search-empty {
   padding: 12px 14px;
   font-size: 12px;
   color: rgba(255, 255, 255, 0.25);

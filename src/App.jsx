@@ -9,6 +9,7 @@ import ManhwaApp from "./apps/Manhwa";
 import AboutApp from "./apps/About";
 import "./App.css";
 import Pet from "./components/Pet";
+import SearchBar from "./components/SearchBar";
 
 const APP_REGISTRY = {
   welcome: {
@@ -123,6 +124,8 @@ export default function App() {
         </div>
       </div>
       <Taskbar onOpenApp={openApp} />
+
+      <SearchBar onOpenApp={openApp} />
       <Desktop>
         {windows.map((win) => {
           if (win.minimized) return null;
