@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import Taskbar from "./components/Taskbar";
 import Desktop from "./components/Desktop";
 import Window from "./components/Window";
@@ -97,12 +97,6 @@ export default function App() {
       prev.map((w) => (w.id === id ? { ...w, ...changes } : w)),
     );
   }
-
-  useEffect(() => {
-    openApp("welcome");
-    setTimeout(() => openApp("clock"), 150);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <div className="os-root">
