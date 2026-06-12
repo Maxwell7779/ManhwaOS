@@ -13,9 +13,7 @@ body,
   height: 100%;
   overflow: hidden;
 }
-html {
-  zoom: 0.5;
-}
+
 body {
   font-family: "Inter", system-ui, sans-serif;
   background: #0a0a1a;
