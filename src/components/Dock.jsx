@@ -22,7 +22,7 @@ export default function Dock({ windows, onOpenApp, onRestore, onFocus }) {
         return (
           <button
             key={app.key}
-            className="dock-icon"
+            className={`dock-icon${isOpen ? " open" : ""}`}
             title={app.label}
             onClick={() => handleClick(app.key)}
           >
