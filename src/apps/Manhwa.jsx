@@ -1,14 +1,15 @@
 const SITES = [
-  { name: "Webtoons", url: "https://www.webtoons.com", icon: "📗" },
-  { name: "Tapas", url: "https://tapas.io", icon: "📘" },
-  { name: "Tappytoon", url: "https://www.tappytoon.com", icon: "📙" },
-  { name: "Lezhin", url: "https://www.lezhinus.com", icon: "📕" },
+  { name: "Read On Webtoon", url: "https://www.webtoons.com" },
+  { name: "Read On Tapas", url: "https://tapas.io" },
+  { name: "Read On Tappytoon", url: "https://www.tappytoon.com" },
+  { name: "Read On Lezhin", url: "https://www.lezhinus.com" },
 ];
 
 export default function ManhwaApp() {
   return (
     <div className="manhwa-app">
       <h2>Official Platforms</h2>
+
       <div className="manhwa-grid">
         {SITES.map((site) => (
           <a
@@ -18,7 +19,6 @@ export default function ManhwaApp() {
             rel="noopener noreferrer"
             className="manhwa-card"
           >
-            <span className="manhwa-icon">{site.icon}</span>
             <span className="manhwa-name">{site.name}</span>
             <span className="manhwa-arrow">↗</span>
           </a>

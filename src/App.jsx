@@ -8,6 +8,7 @@ import ClockApp from "./apps/Clock";
 import ManhwaApp from "./apps/Manhwa";
 import AboutApp from "./apps/About";
 import "./App.css";
+import Pet from "./components/Pet";
 
 const APP_REGISTRY = {
   welcome: {
@@ -109,11 +110,10 @@ export default function App() {
       prev.map((w) => (w.id === id ? { ...w, ...changes } : w)),
     );
   }
-
   return (
     <div className="os-root">
       <div className="wallpaper">
-        <img src="/download.jfif" alt="" draggable="false" />
+        <img src="/download.png" alt="" draggable="false" />
       </div>
       <div className="wallpaper-overlay" />
       <div className="hero-title">
@@ -142,6 +142,7 @@ export default function App() {
           );
         })}
       </Desktop>
+      <Pet />
       <Dock
         windows={windows}
         onOpenApp={openApp}

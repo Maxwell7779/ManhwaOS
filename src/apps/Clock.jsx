@@ -10,7 +10,9 @@ export default function ClockApp() {
   const s = now.getSeconds(),
     m = now.getMinutes(),
     h = now.getHours();
+
   const sDeg = s * 6 - 90;
+
   const mDeg = m * 6 + s * 0.1 - 90;
   const hDeg = h * 30 + m * 0.5 - 90;
 
@@ -34,9 +36,11 @@ export default function ClockApp() {
           stroke="rgba(255,255,255,0.1)"
           strokeWidth="0.5"
         />
+
         {[...Array(12)].map((_, i) => {
           const a = ((i * 30 - 90) * Math.PI) / 180;
           const r1 = i % 3 === 0 ? 46 : 49;
+
           return (
             <line
               key={i}
@@ -49,6 +53,7 @@ export default function ClockApp() {
             />
           );
         })}
+
         <line
           x1="60"
           y1="60"
@@ -58,6 +63,7 @@ export default function ClockApp() {
           strokeWidth="2.5"
           strokeLinecap="round"
         />
+
         <line
           x1="60"
           y1="60"
@@ -67,6 +73,7 @@ export default function ClockApp() {
           strokeWidth="1.8"
           strokeLinecap="round"
         />
+
         <line
           x1="60"
           y1="60"
@@ -76,12 +83,15 @@ export default function ClockApp() {
           strokeWidth="1"
           strokeLinecap="round"
         />
+
         <circle cx="60" cy="60" r="3" fill="rgba(147,112,219,0.9)" />
       </svg>
+
       <div className="clock-digital">
         {String(h).padStart(2, "0")}:{String(m).padStart(2, "0")}:
         {String(s).padStart(2, "0")}
       </div>
+
       <div className="clock-date">
         {now.toLocaleDateString(undefined, {
           weekday: "short",

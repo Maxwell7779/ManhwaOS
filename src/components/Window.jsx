@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export default function Window({
   win,
@@ -9,6 +9,35 @@ export default function Window({
   onFocus,
   onUpdate,
 }) {
+  const [isEntering, setIsEntering] = useState(true);
+  const [isClosing, setIsClosing] = useState(false);
+  const [isMinimizing, setIsMinimizing] = useState(false);
+
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => setIsEntering(false));
+    return () => window.cancelAnimationFrame(frame);
+  }, []);
+
+  const handleClose = useCallback(
+    (e) => {
+      e.stopPropagation();
+      if (isClosing || isMinimizing) return;
+      setIsClosing(true);
+      window.setTimeout(onClose, 180);
+    },
+    [isClosing, isMinimizing, onClose],
+  );
+
+  const handleMinimize = useCallback(
+    (e) => {
+      e.stopPropagation();
+      if (isClosing || isMinimizing) return;
+      setIsMinimizing(true);
+      window.setTimeout(onMinimize, 180);
+    },
+    [isClosing, isMinimizing, onMinimize],
+  );
+
   const handleDragStart = useCallback(
     (e) => {
       if (win.maximized) return;
@@ -75,20 +104,26 @@ export default function Window({
         zIndex: win.z,
       };
 
+  const windowClass = [
+    "os-window",
+    win.maximized ? "maximized" : "",
+    isEntering ? "entering" : "",
+    isClosing ? "closing" : "",
+    isMinimizing ? "minimizing" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   return (
-    <div
-      className={`os-window${win.maximized ? " maximized" : ""}`}
-      style={style}
-      onMouseDown={onFocus}
-    >
+    <div className={windowClass} style={style} onMouseDown={onFocus}>
       <div
         className="win-titlebar"
         onMouseDown={handleDragStart}
         onDoubleClick={onToggleMaximize}
       >
         <div className="win-btns">
-          <button className="win-btn btn-close" onClick={onClose} />
-          <button className="win-btn btn-min" onClick={onMinimize} />
+          <button className="win-btn btn-close" onClick={handleClose} />
+          <button className="win-btn btn-min" onClick={handleMinimize} />
           <button className="win-btn btn-max" onClick={onToggleMaximize} />
         </div>
         <span className="win-title">{win.title}</span>
