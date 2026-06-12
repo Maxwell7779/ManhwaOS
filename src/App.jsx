@@ -116,6 +116,12 @@ export default function App() {
         <img src="/download.jfif" alt="" draggable="false" />
       </div>
       <div className="wallpaper-overlay" />
+      <div className="hero-title">
+        <div>
+          <h1>ManhwaOS</h1>
+          <p>A manwha lovers hangout spot</p>
+        </div>
+      </div>
       <Taskbar onOpenApp={openApp} />
       <Desktop>
         {windows.map((win) => {
