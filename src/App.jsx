@@ -47,14 +47,26 @@ export default function App() {
     const id = nextId.current++;
     const z = nextZ.current++;
 
+    const positions = {
+      welcome: { x: 60, y: 60 },
+      clock: { x: 580, y: 80 },
+      manhwa: { x: 1050, y: 180 },
+      about: { x: 560, y: 360 },
+    };
+
+    const pos = positions[appKey] || {
+      x: 80 + windows.length * 30,
+      y: 80 + windows.length * 30,
+    };
+
     setWindows((prev) => [
       ...prev,
       {
         id,
         appKey,
         title: def.title,
-        x: 80 + prev.length * 30,
-        y: 80 + prev.length * 30,
+        x: pos.x,
+        y: pos.y,
         width: def.width,
         height: def.height,
         z,
@@ -104,7 +116,7 @@ export default function App() {
         <img src="/download.jfif" alt="" draggable="false" />
       </div>
       <div className="wallpaper-overlay" />
-      <Taskbar />
+      <Taskbar onOpenApp={openApp} />
       <Desktop>
         {windows.map((win) => {
           if (win.minimized) return null;
