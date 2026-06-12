@@ -5,8 +5,8 @@ export default function Pet() {
       alt="pet"
       style={{
         position: "fixed",
-        bottom: 80,
-        right: 40,
+        bottom: 24,
+        right: 24,
         zIndex: 9000,
         pointerEvents: "none",
         width: 64,
