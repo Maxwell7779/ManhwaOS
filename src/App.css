@@ -22,7 +22,6 @@
   justify-content: center;
   overflow: hidden;
   z-index: 0;
-  background-position: left center;
   background: #0a0a1a;
 }
 .wallpaper img {
@@ -46,6 +45,8 @@
   );
   z-index: 0;
 }
+
+/* ── HERO TITLE ── */
 .hero-title {
   position: absolute;
   inset: 0;
@@ -57,7 +58,6 @@
   z-index: 1;
   pointer-events: none;
 }
-
 .hero-title > div {
   display: flex;
   flex-direction: column;
@@ -71,7 +71,6 @@
   border-radius: 28px;
   box-shadow: none;
 }
-
 .hero-title h1 {
   margin: 0;
   font-family:
@@ -83,7 +82,6 @@
     0 4px 12px rgba(0, 0, 0, 0.45),
     0 0 16px rgba(0, 0, 0, 0.12);
 }
-
 .hero-title p {
   margin: 16px auto 0;
   font-family: "Manga Master BB", "Avenir Next Rounded", system-ui, sans-serif;
@@ -99,7 +97,8 @@
     0 0 36px rgba(147, 112, 219, 0.32),
     0 0 56px rgba(147, 112, 219, 0.22);
 }
-/* ── TASKBAR — floating island ── */
+
+/* ── TASKBAR ── */
 .taskbar {
   position: absolute;
   top: 12px;
@@ -122,6 +121,8 @@
     0 8px 32px rgba(0, 0, 0, 0.45),
     0 1px 0 rgba(255, 255, 255, 0.07) inset,
     0 0 0 0.5px rgba(147, 112, 219, 0.12);
+  overflow: hidden;
+  min-width: 0;
 }
 .taskbar-logo {
   font-size: 16px;
@@ -129,17 +130,22 @@
   color: rgba(255, 255, 255, 0.95);
   letter-spacing: 1px;
   text-shadow: 0 0 20px rgba(147, 112, 219, 0.6);
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 .taskbar-clock {
   font-size: 13px;
   color: rgba(255, 255, 255, 0.7);
   font-weight: 300;
   letter-spacing: 0.5px;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 .taskbar-icons {
   display: flex;
   align-items: center;
   gap: 4px;
+  flex-shrink: 0;
 }
 
 /* ── DESKTOP ── */
@@ -149,7 +155,7 @@
   z-index: 1;
 }
 
-/* ── WINDOW — glassmorphism ── */
+/* ── WINDOW ── */
 .os-window {
   position: absolute;
   display: flex;
@@ -171,17 +177,14 @@
     box-shadow 0.24s ease;
   opacity: 1;
 }
-
 .os-window.entering {
   opacity: 0;
   transform: scale(0.94) translateY(18px);
 }
-
 .os-window.closing {
   opacity: 0;
   transform: scale(0.92) translateY(-20px);
 }
-
 .os-window.minimizing {
   opacity: 0;
   transform: scale(0.92) translateY(20px);
@@ -264,7 +267,7 @@
   );
 }
 
-/* ── DOCK — floating island ── */
+/* ── DOCK ── */
 .dock {
   position: fixed;
   bottom: 14px;
@@ -370,7 +373,6 @@
 .about-app {
   font-family: "IBM Plex Sans", "Inter", system-ui, sans-serif;
 }
-
 .welcome-app {
   padding: 20px 16px;
   display: flex;
@@ -776,180 +778,6 @@
   color: rgba(147, 112, 219, 1);
 }
 
-/* ════════════════════════════════════════
-   MOBILE RESPONSIVE (≤ 600px)
-   ════════════════════════════════════════ */
-@media (max-width: 600px) {
-  .taskbar {
-    top: 8px;
-    width: calc(100% - 24px);
-    height: 46px;
-    padding: 0 14px;
-    border-radius: 16px;
-  }
-  .taskbar-logo {
-    font-size: 14px;
-  }
-  .taskbar-clock {
-    font-size: 11px;
-  }
-
-  .os-window {
-    position: fixed !important;
-    left: 8px !important;
-    right: 8px !important;
-    top: 62px !important;
-    width: calc(100vw - 16px) !important;
-    height: calc(100vh - 62px - 80px) !important;
-    border-radius: 16px;
-    min-width: unset;
-    min-height: unset;
-    z-index: 500 !important;
-  }
-  .win-resize {
-    display: none;
-  }
-  .win-titlebar {
-    cursor: default;
-  }
-
-  .dock {
-    bottom: 10px;
-    padding: 8px 12px;
-    gap: 6px;
-    border-radius: 20px;
-  }
-  .dock-icon-inner {
-    width: 46px;
-    height: 46px;
-    border-radius: 12px;
-  }
-  .dock-icon-label {
-    font-size: 8px;
-  }
-
-  .tb-dropdown {
-    position: fixed;
-    top: 62px;
-    right: 8px;
-    left: 8px;
-    width: calc(100vw - 16px);
-    border-radius: 16px;
-    max-height: calc(100vh - 62px - 80px);
-    overflow-y: auto;
-  }
-
-  .manhwa-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 768px) {
-  .hero-title {
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-  }
-
-  .hero-title > div {
-    width: min(100%, 90vw);
-    max-width: 540px;
-    padding: 18px 20px;
-    gap: 16px;
-  }
-
-  .hero-title h1,
-  .hero-title p {
-    margin: 0;
-  }
-}
-
-/* ── SEARCH BAR ── */
-.tb-search-wrap {
-  position: relative;
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  max-width: 320px;
-  margin: 0 18px;
-}
-.tb-search-bar {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background: rgba(255, 255, 255, 0.07);
-  border: 0.5px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  padding: 3px 10px;
-  cursor: text;
-  width: 220px;
-  transition:
-    width 0.2s,
-    background 0.15s;
-}
-.tb-search-bar.open {
-  width: 280px;
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(147, 112, 219, 0.4);
-}
-.tb-search-placeholder {
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.3);
-  pointer-events: none;
-}
-.tb-search-input {
-  background: none;
-  border: none;
-  outline: none;
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 11px;
-  width: 100%;
-  font-family: inherit;
-}
-.tb-search-input::placeholder {
-  color: rgba(255, 255, 255, 0.3);
-}
-.tb-search-dropdown {
-  position: absolute;
-  top: calc(100% + 8px);
-  left: 50%;
-  transform: translateX(-50%);
-  width: 220px;
-  background: rgba(10, 12, 32, 0.85);
-  backdrop-filter: blur(32px) saturate(180%);
-  -webkit-backdrop-filter: blur(32px) saturate(180%);
-  border: 0.5px solid rgba(255, 255, 255, 0.12);
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6);
-  z-index: 99999;
-}
-.tb-search-result {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 9px 14px;
-  color: rgba(255, 255, 255, 0.75);
-  font-size: 12px;
-  text-decoration: none;
-  background: none;
-  border: none;
-  width: 100%;
-  cursor: pointer;
-  font-family: inherit;
-  transition: background 0.12s;
-}
-.tb-search-result:hover {
-  background: rgba(147, 112, 219, 0.15);
-  color: rgba(255, 255, 255, 0.95);
-}
-.tb-search-empty {
-  padding: 12px 14px;
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.25);
-  text-align: center;
-}
-
 /* ── FLOATING SEARCH ── */
 .floating-search-wrap {
   position: fixed;
@@ -1038,21 +866,100 @@
   text-align: center;
 }
 
+/* ── WALLPAPER CREDIT ── */
 .wallpaper-credit {
   position: fixed;
   bottom: 10px;
   left: 10px;
-
   font-family: "IBM Plex Sans", system-ui, sans-serif;
   font-size: 13px;
   color: rgba(255, 255, 255, 0.75);
-
   text-decoration: none;
   z-index: 1000;
-
   transition: color 0.2s ease;
 }
-
 .wallpaper-credit:hover {
   color: rgba(255, 255, 255, 0.9);
+}
+
+/* ════════════════════════════════════════
+   MOBILE — same look as desktop
+   ════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .hero-title {
+    padding: 14vh 0 0;
+  }
+  .hero-title > div {
+    width: min(100%, 90vw);
+    padding: 18px 20px;
+  }
+  .hero-title h1 {
+    font-size: clamp(1.8rem, 10vw, 3rem);
+  }
+  .hero-title p {
+    font-size: clamp(0.7rem, 3vw, 0.9rem);
+  }
+
+  /* taskbar stays floating island, just a bit narrower */
+  .taskbar {
+    top: 10px;
+    width: calc(100% - 24px);
+    height: 48px;
+    padding: 0 14px;
+    border-radius: 18px;
+  }
+  .taskbar-logo {
+    font-size: 13px;
+  }
+  .taskbar-clock {
+    font-size: 11px;
+  }
+
+  /* floating search adjusts width */
+  .floating-search-wrap {
+    top: 70px;
+  }
+  .floating-search-bar {
+    width: min(260px, 70vw);
+  }
+  .floating-search-bar.open {
+    width: min(320px, 88vw);
+  }
+  .floating-search-dropdown {
+    width: min(320px, 88vw);
+  }
+
+  /* windows stay draggable and positioned like desktop */
+  .os-window {
+    min-width: 260px;
+    min-height: 180px;
+  }
+
+  /* dock same as desktop, just slightly smaller icons */
+  .dock {
+    bottom: 12px;
+    padding: 8px 14px;
+    gap: 6px;
+    border-radius: 22px;
+  }
+  .dock-icon-inner {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+  }
+  .dock-icon-label {
+    font-size: 8px;
+  }
+
+  /* dropdowns don't go full screen, stay anchored like desktop */
+  .tb-dropdown {
+    width: 240px;
+  }
+  .tb-dropdown-bt {
+    width: 240px;
+  }
+
+  .manhwa-grid {
+    grid-template-columns: 1fr;
+  }
 }
