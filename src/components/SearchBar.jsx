@@ -1,13 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import {
-  Search,
-  ChessKing,
-  ChessQueen,
-  ChessRook,
-  ChessKnight,
-  ChessBishop,
-  ChessPawn,
-} from "lucide-react";
+import { Search } from "lucide-react";
 
 const SEARCH_APPS = [
   { name: "Welcome", key: "welcome" },

@@ -10,7 +10,7 @@ export default function AboutApp() {
       </p>
 
       <p>
-        Wallpaper from <em>Omniscient Reader's Viewpoint</em> (ORV).
+        Wallpaper from <em>Landscapes Visuals</em> (ORV).
       </p>
 
       <p className="about-small">Drag windows · Resize · Minimize · Maximize</p>

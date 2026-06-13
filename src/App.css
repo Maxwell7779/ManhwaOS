@@ -121,7 +121,6 @@
     0 8px 32px rgba(0, 0, 0, 0.45),
     0 1px 0 rgba(255, 255, 255, 0.07) inset,
     0 0 0 0.5px rgba(147, 112, 219, 0.12);
-  overflow: hidden;
   min-width: 0;
 }
 .taskbar-logo {
@@ -870,16 +869,53 @@
 .wallpaper-credit {
   position: fixed;
   bottom: 10px;
-  left: 10px;
+  left: 16px;
   font-family: "IBM Plex Sans", system-ui, sans-serif;
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.75);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.4);
   text-decoration: none;
   z-index: 1000;
   transition: color 0.2s ease;
+  letter-spacing: 0.3px;
 }
 .wallpaper-credit:hover {
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* ── VISITOR COUNT ── */
+.visitor-count {
+  position: fixed;
+  bottom: 36px;
+  left: 20px;
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: "IBM Plex Sans", system-ui, sans-serif;
+  pointer-events: none;
+  user-select: none;
+}
+.visitor-count-number {
+  font-size: 28px;
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow:
+    0 4px 18px rgba(0, 0, 0, 0.85),
+    0 0 22px rgba(255, 255, 255, 0.18),
+    0 0 30px rgba(147, 112, 219, 0.25);
+  letter-spacing: 0.5px;
+  line-height: 1;
+}
+.visitor-count-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #ffffff;
+  text-shadow:
+    0 3px 12px rgba(0, 0, 0, 0.55),
+    0 0 14px rgba(255, 255, 255, 0.12);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  line-height: 1;
 }
 
 /* ════════════════════════════════════════
@@ -899,8 +935,6 @@
   .hero-title p {
     font-size: clamp(0.7rem, 3vw, 0.9rem);
   }
-
-  /* taskbar stays floating island, just a bit narrower */
   .taskbar {
     top: 10px;
     width: calc(100% - 24px);
@@ -914,8 +948,6 @@
   .taskbar-clock {
     font-size: 11px;
   }
-
-  /* floating search adjusts width */
   .floating-search-wrap {
     top: 70px;
   }
@@ -928,14 +960,10 @@
   .floating-search-dropdown {
     width: min(320px, 88vw);
   }
-
-  /* windows stay draggable and positioned like desktop */
   .os-window {
     min-width: 260px;
     min-height: 180px;
   }
-
-  /* dock same as desktop, just slightly smaller icons */
   .dock {
     bottom: 12px;
     padding: 8px 14px;
@@ -950,15 +978,12 @@
   .dock-icon-label {
     font-size: 8px;
   }
-
-  /* dropdowns don't go full screen, stay anchored like desktop */
   .tb-dropdown {
     width: 240px;
   }
   .tb-dropdown-bt {
     width: 240px;
   }
-
   .manhwa-grid {
     grid-template-columns: 1fr;
   }
