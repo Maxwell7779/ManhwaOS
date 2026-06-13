@@ -178,6 +178,14 @@ export default function App() {
         <img src="/download.png" alt="" draggable="false" />
       </div>
       <div className="wallpaper-overlay" />
+      <a
+        href="https://ph.pinterest.com/lifescapesvisual/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="wallpaper-credit"
+      >
+        © LifeScapes Visual
+      </a>
       <div className="hero-title">
         <div>
           <h1>ManhwaOS</h1>

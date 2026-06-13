@@ -93,8 +93,9 @@
   text-transform: uppercase;
   line-height: 1.6;
   text-shadow:
-    0 3px 14px rgba(0, 0, 0, 0.5),
-    0 0 10px rgba(0, 0, 0, 0.2);
+    0 4px 12px rgba(0, 0, 0, 0.55),
+    0 0 18px rgba(0, 0, 0, 0.18),
+    0 0 26px rgba(147, 112, 219, 0.16);
 }
 /* ── TASKBAR — floating island ── */
 .taskbar {
@@ -1033,4 +1034,23 @@
   font-size: 12px;
   color: rgba(255, 255, 255, 0.25);
   text-align: center;
+}
+
+.wallpaper-credit {
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+
+  font-family: "IBM Plex Sans", system-ui, sans-serif;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.75);
+
+  text-decoration: none;
+  z-index: 1000;
+
+  transition: color 0.2s ease;
+}
+
+.wallpaper-credit:hover {
+  color: rgba(255, 255, 255, 0.9);
 }
