@@ -40,23 +40,31 @@ export default function Window({
 
   const handleDragStart = useCallback(
     (e) => {
-      if (win.maximized) return;
+      if (e.button !== 0 || win.maximized) return;
+      e.preventDefault();
       onFocus();
-      const startX = e.clientX,
-        startY = e.clientY;
-      const ox = win.x,
-        oy = win.y;
+      const startX = e.clientX;
+      const startY = e.clientY;
+      const ox = win.x;
+      const oy = win.y;
+      let raf = null;
 
       function onMove(ev) {
-        onUpdate({
-          x: ox + (ev.clientX - startX),
-          y: Math.max(72, oy + (ev.clientY - startY)),
+        if (raf) window.cancelAnimationFrame(raf);
+        raf = window.requestAnimationFrame(() => {
+          onUpdate({
+            x: ox + (ev.clientX - startX),
+            y: Math.max(72, oy + (ev.clientY - startY)),
+          });
         });
       }
+
       function onUp() {
+        if (raf) window.cancelAnimationFrame(raf);
         window.removeEventListener("mousemove", onMove);
         window.removeEventListener("mouseup", onUp);
       }
+
       window.addEventListener("mousemove", onMove);
       window.addEventListener("mouseup", onUp);
     },
@@ -65,20 +73,26 @@ export default function Window({
 
   const handleResizeStart = useCallback(
     (e) => {
-      e.stopPropagation();
-      if (win.maximized) return;
-      const startX = e.clientX,
-        startY = e.clientY;
-      const ow = win.width,
-        oh = win.height;
+      if (e.button !== 0 || win.maximized) return;
+      e.preventDefault();
+      const startX = e.clientX;
+      const startY = e.clientY;
+      const ow = win.width;
+      const oh = win.height;
+      let raf = null;
 
       function onMove(ev) {
-        onUpdate({
-          width: Math.max(260, ow + (ev.clientX - startX)),
-          height: Math.max(180, oh + (ev.clientY - startY)),
+        if (raf) window.cancelAnimationFrame(raf);
+        raf = window.requestAnimationFrame(() => {
+          onUpdate({
+            width: Math.max(260, ow + (ev.clientX - startX)),
+            height: Math.max(180, oh + (ev.clientY - startY)),
+          });
         });
       }
+
       function onUp() {
+        if (raf) window.cancelAnimationFrame(raf);
         window.removeEventListener("mousemove", onMove);
         window.removeEventListener("mouseup", onUp);
       }
@@ -126,9 +140,12 @@ export default function Window({
           <button className="win-btn btn-min" onClick={handleMinimize} />
           <button className="win-btn btn-max" onClick={onToggleMaximize} />
         </div>
+
         <span className="win-title">{win.title}</span>
       </div>
+
       <div className="win-body">{children}</div>
+
       {!win.maximized && (
         <div className="win-resize" onMouseDown={handleResizeStart} />
       )}

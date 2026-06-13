@@ -1,6 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=Monoton&family=Manga+Master+BB&display=swap");
 
-/* ── ROOT ── */
 .os-root {
   width: 100vw;
   height: 100vh;
@@ -10,7 +9,6 @@
     "Manga Master BB", "Monoton", "Avenir Next Rounded", system-ui, sans-serif;
 }
 
-/* ── WALLPAPER ── */
 .wallpaper {
   position: fixed;
   top: 0;
@@ -24,6 +22,7 @@
   z-index: 0;
   background: #0a0a1a;
 }
+
 .wallpaper img {
   transform: rotate(270deg);
   height: 105vw;
@@ -33,7 +32,7 @@
   flex-shrink: 0;
 }
 
-/* ── WALLPAPER OVERLAY ── */
+/* overlay dont forget finish by 5 */
 .wallpaper-overlay {
   position: absolute;
   inset: 0;
@@ -46,7 +45,7 @@
   z-index: 0;
 }
 
-/* ── HERO TITLE ── */
+/* ManhwaOS or Welcome To My OS*/
 .hero-title {
   position: absolute;
   inset: 0;
@@ -58,6 +57,7 @@
   z-index: 1;
   pointer-events: none;
 }
+
 .hero-title > div {
   display: flex;
   flex-direction: column;
@@ -82,6 +82,7 @@
     0 4px 12px rgba(0, 0, 0, 0.45),
     0 0 16px rgba(0, 0, 0, 0.12);
 }
+
 .hero-title p {
   margin: 16px auto 0;
   font-family: "Manga Master BB", "Avenir Next Rounded", system-ui, sans-serif;
@@ -98,7 +99,6 @@
     0 0 56px rgba(147, 112, 219, 0.22);
 }
 
-/* ── TASKBAR ── */
 .taskbar {
   position: absolute;
   top: 12px;
@@ -123,6 +123,7 @@
     0 0 0 0.5px rgba(147, 112, 219, 0.12);
   min-width: 0;
 }
+
 .taskbar-logo {
   font-size: 16px;
   font-weight: 700;
@@ -132,6 +133,7 @@
   white-space: nowrap;
   flex-shrink: 0;
 }
+
 .taskbar-clock {
   font-size: 13px;
   color: rgba(255, 255, 255, 0.7);
@@ -140,6 +142,7 @@
   white-space: nowrap;
   flex-shrink: 0;
 }
+
 .taskbar-icons {
   display: flex;
   align-items: center;
@@ -147,14 +150,12 @@
   flex-shrink: 0;
 }
 
-/* ── DESKTOP ── */
 .desktop {
   position: absolute;
   inset: 0;
   z-index: 1;
 }
 
-/* ── WINDOW ── */
 .os-window {
   position: absolute;
   display: flex;
@@ -176,20 +177,22 @@
     box-shadow 0.24s ease;
   opacity: 1;
 }
+
 .os-window.entering {
   opacity: 0;
   transform: scale(0.94) translateY(18px);
 }
+
 .os-window.closing {
   opacity: 0;
   transform: scale(0.92) translateY(-20px);
 }
+
 .os-window.minimizing {
   opacity: 0;
   transform: scale(0.92) translateY(20px);
 }
 
-/* ── TITLEBAR ── */
 .win-titlebar {
   height: 38px;
   min-height: 38px;
@@ -201,11 +204,13 @@
   border-bottom: 0.5px solid rgba(255, 255, 255, 0.07);
   flex-shrink: 0;
 }
+
 .win-btns {
   display: flex;
   gap: 6px;
   align-items: center;
 }
+
 .win-btn {
   width: 12px;
   height: 12px;
@@ -217,6 +222,7 @@
     filter 0.15s;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
+
 .win-btn:hover {
   transform: scale(1.3);
   filter: brightness(1.2);
@@ -230,6 +236,7 @@
 .btn-max {
   background: #28c840;
 }
+
 .win-title {
   flex: 1;
   text-align: center;
@@ -244,6 +251,7 @@
   overflow: auto;
   color: rgba(255, 255, 255, 0.85);
 }
+
 .win-body::-webkit-scrollbar {
   width: 4px;
 }
@@ -266,7 +274,7 @@
   );
 }
 
-/* ── DOCK ── */
+/* yep copilots doing dock css */
 .dock {
   position: fixed;
   bottom: 14px;
@@ -278,8 +286,8 @@
   justify-content: center;
   gap: 8px;
   background: rgba(12, 14, 32, 0.5);
-  backdrop-filter: blur(20px) saturate(130%);
-  -webkit-backdrop-filter: blur(20px) saturate(130%);
+  backdrop-filter: blur(22px) saturate(130%);
+  -webkit-backdrop-filter: blur(22px) saturate(130%);
   border: 0.5px solid rgba(255, 255, 255, 0.12);
   border-radius: 24px;
   padding: 10px 16px;
@@ -299,6 +307,7 @@
   cursor: pointer;
   padding: 0;
 }
+
 .dock-icon-inner {
   width: 52px;
   height: 52px;
@@ -365,13 +374,14 @@
   visibility: hidden;
 }
 
-/* ── WELCOME APP ── */
+/* change to fimamce type font*/
 .welcome-app,
 .clock-app,
 .manhwa-app,
 .about-app {
   font-family: "IBM Plex Sans", "Inter", system-ui, sans-serif;
 }
+
 .welcome-app {
   padding: 20px 16px;
   display: flex;
@@ -383,6 +393,7 @@
 .welcome-logo {
   font-size: 32px;
 }
+
 .welcome-app h2 {
   font-size: 18px;
   font-weight: 300;
@@ -395,6 +406,7 @@
   color: rgba(255, 255, 255, 0.45);
   line-height: 1.7;
 }
+
 .welcome-quote {
   padding: 10px 14px;
   background: rgba(147, 112, 219, 0.07);
@@ -415,6 +427,7 @@
   font-size: 10px;
   color: rgba(200, 180, 255, 0.4);
 }
+
 .welcome-links {
   display: flex;
   flex-direction: column;
@@ -438,6 +451,7 @@
     transform 0.1s;
   backdrop-filter: blur(8px);
 }
+
 .welcome-link:hover {
   background: rgba(147, 112, 219, 0.12);
   border-color: rgba(147, 112, 219, 0.35);
@@ -447,7 +461,6 @@
   color: rgba(147, 112, 219, 0.8);
 }
 
-/* ── CLOCK APP ── */
 .clock-app {
   padding: 20px;
   display: flex;
@@ -463,13 +476,13 @@
   font-variant-numeric: tabular-nums;
   text-shadow: 0 0 20px rgba(147, 112, 219, 0.4);
 }
+
 .clock-date {
   font-size: 11px;
   color: rgba(255, 255, 255, 0.35);
   letter-spacing: 0.5px;
 }
 
-/* ── MANHWA APP ── */
 .manhwa-app {
   padding: 16px;
 }
@@ -501,6 +514,7 @@
     transform 0.1s;
   backdrop-filter: blur(8px);
 }
+
 .manhwa-card:hover {
   background: rgba(147, 112, 219, 0.12);
   border-color: rgba(147, 112, 219, 0.3);
@@ -519,6 +533,7 @@
   font-size: 10px;
   color: rgba(147, 112, 219, 0.7);
 }
+
 .manhwa-note {
   margin-top: 10px;
   font-size: 10px;
@@ -526,7 +541,6 @@
   line-height: 1.5;
 }
 
-/* ── ABOUT APP ── */
 .about-app {
   padding: 20px;
   display: flex;
@@ -559,7 +573,6 @@
   color: rgba(255, 255, 255, 0.2) !important;
 }
 
-/* ── TASKBAR ICON BUTTONS ── */
 .tb-icon-btn {
   background: none;
   border: none;
@@ -581,7 +594,7 @@
   box-shadow: 0 0 12px rgba(147, 112, 219, 0.2);
 }
 
-/* ── DROPDOWNS ── */
+/* tommorow afternoon */
 .tb-dropdown-wrap {
   position: relative;
 }
@@ -601,6 +614,7 @@
     0 1px 0 rgba(255, 255, 255, 0.07) inset;
   z-index: 99999;
 }
+
 .tb-dropdown-header {
   display: flex;
   align-items: center;
@@ -612,6 +626,7 @@
   border-bottom: 0.5px solid rgba(255, 255, 255, 0.06);
   margin-bottom: 6px;
 }
+
 .tb-dropdown-section-label {
   font-size: 10px;
   color: rgba(255, 255, 255, 0.25);
@@ -632,12 +647,14 @@
   transition: background 0.12s;
   text-align: left;
 }
+
 .tb-network-row:hover {
   background: rgba(255, 255, 255, 0.05);
 }
 .tb-network-row.connected {
   color: rgba(147, 112, 219, 1);
 }
+
 .tb-network-name {
   flex: 1;
   text-align: left;
@@ -653,10 +670,10 @@
   padding-top: 8px;
 }
 
-/* ── BLUETOOTH PLAYER ── */
 .tb-dropdown-bt {
   width: 260px;
 }
+
 .tb-track-info {
   padding: 10px 14px 6px;
   text-align: center;
@@ -666,13 +683,15 @@
   font-weight: 500;
   color: rgba(255, 255, 255, 0.9);
 }
+
 .tb-track-sub {
   font-size: 11px;
   color: rgba(200, 180, 255, 0.4);
   margin-top: 3px;
 }
 
-/* ── PROGRESS BAR ── */
+/* speedrun this cuz its rarely opened*/
+
 .tb-progress-wrap {
   padding: 8px 14px 2px;
   cursor: pointer;
@@ -707,6 +726,7 @@
   pointer-events: none;
   transition: left 0.1s linear;
 }
+
 .tb-progress-times {
   display: flex;
   justify-content: space-between;
@@ -721,6 +741,7 @@
   gap: 12px;
   padding: 10px 0 6px;
 }
+
 .tb-ctrl-btn {
   background: rgba(255, 255, 255, 0.05);
   border: 0.5px solid rgba(255, 255, 255, 0.1);
@@ -748,6 +769,7 @@
   background: rgba(147, 112, 219, 0.35);
   box-shadow: 0 4px 16px rgba(147, 112, 219, 0.3);
 }
+
 .tb-track-list {
   border-top: 0.5px solid rgba(255, 255, 255, 0.06);
   margin-top: 4px;
@@ -777,7 +799,6 @@
   color: rgba(147, 112, 219, 1);
 }
 
-/* ── FLOATING SEARCH ── */
 .floating-search-wrap {
   position: fixed;
   top: 76px;
@@ -793,8 +814,8 @@
   align-items: center;
   gap: 8px;
   background: rgba(10, 12, 30, 0.36);
-  backdrop-filter: blur(18px) saturate(120%);
-  -webkit-backdrop-filter: blur(18px) saturate(120%);
+  backdrop-filter: blur(14px) saturate(120%);
+  -webkit-backdrop-filter: blur(14px) saturate(120%);
   border: 0.5px solid rgba(255, 255, 255, 0.12);
   border-radius: 20px;
   padding: 8px 14px;
@@ -805,6 +826,7 @@
     background 0.15s,
     transform 0.15s;
 }
+
 .floating-search-bar.open {
   width: 340px;
   background: rgba(10, 12, 30, 0.4);
@@ -824,6 +846,7 @@
   width: 100%;
   font-family: inherit;
 }
+
 .floating-search-input::placeholder {
   color: rgba(255, 255, 255, 0.3);
 }
@@ -831,8 +854,8 @@
   margin-top: 6px;
   width: 320px;
   background: rgba(10, 12, 32, 0.85);
-  backdrop-filter: blur(32px) saturate(180%);
-  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
   border: 0.5px solid rgba(255, 255, 255, 0.12);
   border-radius: 12px;
   overflow: hidden;
@@ -854,6 +877,7 @@
   transition: background 0.12s;
   text-align: left;
 }
+
 .floating-search-result:hover {
   background: rgba(147, 112, 219, 0.15);
   color: rgba(255, 255, 255, 0.95);
@@ -882,7 +906,6 @@
   color: rgba(255, 255, 255, 0.7);
 }
 
-/* ── VISITOR COUNT ── */
 .visitor-count {
   position: fixed;
   bottom: 36px;
@@ -895,6 +918,7 @@
   pointer-events: none;
   user-select: none;
 }
+
 .visitor-count-number {
   font-size: 28px;
   font-weight: 700;
@@ -906,6 +930,7 @@
   letter-spacing: 0.5px;
   line-height: 1;
 }
+
 .visitor-count-label {
   font-size: 12px;
   font-weight: 600;
@@ -918,23 +943,26 @@
   line-height: 1;
 }
 
-/* ════════════════════════════════════════
-   MOBILE — same look as desktop
-   ════════════════════════════════════════ */
+/* kuya said it bleeds out on mobile*/
+
 @media (max-width: 768px) {
   .hero-title {
     padding: 14vh 0 0;
   }
+
   .hero-title > div {
     width: min(100%, 90vw);
     padding: 18px 20px;
   }
+
   .hero-title h1 {
     font-size: clamp(1.8rem, 10vw, 3rem);
   }
+
   .hero-title p {
     font-size: clamp(0.7rem, 3vw, 0.9rem);
   }
+
   .taskbar {
     top: 10px;
     width: calc(100% - 24px);
@@ -942,6 +970,7 @@
     padding: 0 14px;
     border-radius: 18px;
   }
+
   .taskbar-logo {
     font-size: 13px;
   }
@@ -954,6 +983,7 @@
   .floating-search-bar {
     width: min(260px, 70vw);
   }
+
   .floating-search-bar.open {
     width: min(320px, 88vw);
   }
@@ -964,6 +994,7 @@
     min-width: 260px;
     min-height: 180px;
   }
+
   .dock {
     bottom: 12px;
     padding: 8px 14px;
@@ -975,6 +1006,7 @@
     height: 46px;
     border-radius: 12px;
   }
+
   .dock-icon-label {
     font-size: 8px;
   }
@@ -984,7 +1016,9 @@
   .tb-dropdown-bt {
     width: 240px;
   }
+
   .manhwa-grid {
     grid-template-columns: 1fr;
   }
 }
+/* whoever invented css yeah FUCK YOU */

@@ -4,16 +4,13 @@ export default function AboutApp() {
       <h2>About ManhwaOS</h2>
 
       <span className="about-badge">v1.0 · Web Desktop</span>
-      <p>
-        A simulated macOS-style desktop for manhwa fans, built with React +
-        Vite.
-      </p>
+      <p>A webos for manhwa fans, built with React + Vite.</p>
 
       <p>
-        Wallpaper from <em>Landscapes Visuals</em> (ORV).
+        the wallpaper is from <em>Landscapes Visuals</em> (ORV).
       </p>
 
-      <p className="about-small">Drag windows · Resize · Minimize · Maximize</p>
+      <p className="about-small"> Drag · Resize · Minimize · Maximize </p>
     </div>
   );
 }

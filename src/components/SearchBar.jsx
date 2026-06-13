@@ -8,6 +8,8 @@ const SEARCH_APPS = [
   { name: "About", key: "about" },
 ];
 
+/* change to nonn floating later might be better*/
+
 export default function SearchBar({ onOpenApp }) {
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -24,6 +26,7 @@ export default function SearchBar({ onOpenApp }) {
         setSearchQuery("");
       }
     }
+
     document.addEventListener("mousedown", handle);
     return () => document.removeEventListener("mousedown", handle);
   }, []);
@@ -52,13 +55,16 @@ export default function SearchBar({ onOpenApp }) {
                   `https://mangadex.org/search?q=${encodeURIComponent(searchQuery.trim())}`,
                   "_blank",
                 );
+
                 setSearchOpen(false);
                 setSearchQuery("");
               }
             }}
           />
         ) : (
-          <span className="floating-search-placeholder">Search apps...</span>
+          <span className="floating-search-placeholder">
+            Search apps or manhwas...
+          </span>
         )}
       </div>
 

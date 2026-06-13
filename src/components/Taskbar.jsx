@@ -2,18 +2,18 @@ import { useState, useEffect, useRef } from "react";
 import { Wifi, Bluetooth } from "lucide-react";
 
 const FAKE_NETWORKS = [
-  { name: "ORV_StarStream", strength: 4, secured: true },
-  { name: "KimDokja_5G", strength: 3, secured: true },
-  { name: "YooJoonghyuk_WiFi", strength: 3, secured: true },
-  { name: "Han_Sooyoung_Net", strength: 2, secured: true },
-  { name: "scenario_free", strength: 1, secured: false },
-  { name: "GuestNetwork", strength: 2, secured: false },
+  { name: "ManhwaOSWiFi", strength: 4, secured: true },
+  { name: "KimDokja5G", strength: 3, secured: true },
+  { name: "YooJoonghyukWiFi", strength: 3, secured: true },
+  { name: "HanSooyoungNet", strength: 2, secured: true },
+  { name: "STARDUSTPLSSS", strength: 1, secured: false },
+  { name: "hehehe", strength: 2, secured: false },
 ];
 
 const ORV_TRACKS = [
-  { title: "Three Ways to Survive", src: "/orv1.mp3" },
-  { title: "Omniscient Reader", src: "/orv2.mp3" },
-  { title: "Star Stream", src: "/orv3.mp3" },
+  { title: "LetTheSKyFALLL", src: "/orv1.mp3" },
+  { title: "Unknown Track", src: "/orv2.mp3" },
+  { title: "Unknown Track", src: "/orv3.mp3" },
 ];
 
 function SignalBars({ strength }) {
@@ -55,8 +55,10 @@ export default function Taskbar() {
   const [now, setNow] = useState(new Date());
   const [wifiOpen, setWifiOpen] = useState(false);
   const [btOpen, setBtOpen] = useState(false);
+
   const [connectedWifi, setConnectedWifi] = useState(null);
   const [playing, setPlaying] = useState(false);
+
   const [trackIdx, setTrackIdx] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -74,6 +76,7 @@ export default function Taskbar() {
         setBtOpen(false);
       }
     }
+
     document.addEventListener("mousedown", handle);
     return () => document.removeEventListener("mousedown", handle);
   }, []);
@@ -124,10 +127,12 @@ export default function Taskbar() {
     month: "short",
     day: "numeric",
   });
+
   const time = now.toLocaleTimeString(undefined, {
     hour: "numeric",
     minute: "2-digit",
   });
+
   const progress = duration ? (currentTime / duration) * 100 : 0;
 
   return (
@@ -151,14 +156,17 @@ export default function Taskbar() {
             >
               <Wifi size={14} />
             </button>
+
             {wifiOpen && (
               <div className="tb-dropdown">
                 <div className="tb-dropdown-header">
                   <Wifi size={14} /> Wi-Fi
                 </div>
+
                 <div className="tb-dropdown-section-label">
                   AVAILABLE NETWORKS
                 </div>
+
                 {FAKE_NETWORKS.map((net) => (
                   <button
                     key={net.name}
@@ -169,9 +177,11 @@ export default function Taskbar() {
                       {net.secured ? "🔒 " : "🌐 "}
                       {net.name}
                     </span>
+
                     <SignalBars strength={net.strength} />
                   </button>
                 ))}
+
                 {connectedWifi && (
                   <div className="tb-dropdown-connected">
                     Connected: <strong>{connectedWifi}</strong>
@@ -197,10 +207,12 @@ export default function Taskbar() {
                 <div className="tb-dropdown-header">
                   <Bluetooth size={14} /> ORV Soundtrack
                 </div>
+
                 <div className="tb-track-info">
                   <div className="tb-track-title">
                     {ORV_TRACKS[trackIdx].title}
                   </div>
+
                   <div className="tb-track-sub">
                     Omniscient Reader's Viewpoint OST
                   </div>
@@ -211,30 +223,36 @@ export default function Taskbar() {
                       className="tb-progress-fill"
                       style={{ width: `${progress}%` }}
                     />
+
                     <div
                       className="tb-progress-thumb"
                       style={{ left: `${progress}%` }}
                     />
                   </div>
                 </div>
+
                 <div className="tb-progress-times">
                   <span>{formatTime(currentTime)}</span>
                   <span>{formatTime(duration)}</span>
                 </div>
+
                 <div className="tb-player-controls">
                   <button className="tb-ctrl-btn" onClick={prevTrack}>
                     ⏮
                   </button>
+
                   <button
                     className="tb-ctrl-btn tb-play-btn"
                     onClick={togglePlay}
                   >
                     {playing ? "⏸" : "▶"}
                   </button>
+
                   <button className="tb-ctrl-btn" onClick={nextTrack}>
                     ⏭
                   </button>
                 </div>
+
                 <div className="tb-track-list">
                   {ORV_TRACKS.map((t, i) => (
                     <button
@@ -242,10 +260,12 @@ export default function Taskbar() {
                       className={`tb-track-row${i === trackIdx ? " active" : ""}`}
                       onClick={() => {
                         setTrackIdx(i);
+
                         setPlaying(false);
                         setCurrentTime(0);
                         setTimeout(() => {
                           audioRef.current?.play();
+
                           setPlaying(true);
                         }, 50);
                       }}
@@ -255,6 +275,7 @@ export default function Taskbar() {
                     </button>
                   ))}
                 </div>
+
                 <audio
                   ref={audioRef}
                   src={ORV_TRACKS[trackIdx].src}

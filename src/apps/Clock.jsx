@@ -7,23 +7,26 @@ export default function ClockApp() {
     return () => clearInterval(t);
   }, []);
 
-  const s = now.getSeconds(),
-    m = now.getMinutes(),
-    h = now.getHours();
+  const s = now.getSeconds();
+  const m = now.getMinutes();
+  const h = now.getHours();
 
   const sDeg = s * 6 - 90;
-
   const mDeg = m * 6 + s * 0.1 - 90;
   const hDeg = h * 30 + m * 0.5 - 90;
 
-  function handEnd(deg, len) {
-    const r = (deg * Math.PI) / 180;
-    return { x: 60 + len * Math.cos(r), y: 60 + len * Math.sin(r) };
-  }
-
-  const sh = handEnd(hDeg, 28),
-    sm = handEnd(mDeg, 38),
-    ss = handEnd(sDeg, 42);
+  const sh = {
+    x: 60 + 28 * Math.cos((hDeg * Math.PI) / 180),
+    y: 60 + 28 * Math.sin((hDeg * Math.PI) / 180),
+  };
+  const sm = {
+    x: 60 + 38 * Math.cos((mDeg * Math.PI) / 180),
+    y: 60 + 38 * Math.sin((mDeg * Math.PI) / 180),
+  };
+  const ss = {
+    x: 60 + 42 * Math.cos((sDeg * Math.PI) / 180),
+    y: 60 + 42 * Math.sin((sDeg * Math.PI) / 180),
+  };
 
   return (
     <div className="clock-app">
@@ -84,7 +87,7 @@ export default function ClockApp() {
           strokeLinecap="round"
         />
 
-        <circle cx="60" cy="60" r="3" fill="rgba(147,112,219,0.9)" />
+        <circle cx="60" cy="60" r="3" fill="   rgba(147,112,219,0.9)" />
       </svg>
 
       <div className="clock-digital">

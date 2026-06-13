@@ -20,6 +20,7 @@ export default function VisitorCount() {
         <div className="visitor-count-number">
           {typeof count === "number" ? count.toLocaleString() : count}
         </div>
+
         <div className="visitor-count-label">visitors</div>
       </div>
     </div>

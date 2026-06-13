@@ -24,8 +24,9 @@ export default function ManhwaApp() {
           </a>
         ))}
       </div>
+
       <p className="manhwa-note">
-        Support creators — read on licensed platforms only.
+        Please Support The creators — read Manhwas on licensed platforms only.
       </p>
     </div>
   );
