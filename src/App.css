@@ -93,9 +93,11 @@
   text-transform: uppercase;
   line-height: 1.6;
   text-shadow:
-    0 4px 12px rgba(0, 0, 0, 0.55),
-    0 0 18px rgba(0, 0, 0, 0.18),
-    0 0 26px rgba(147, 112, 219, 0.16);
+    0 8px 18px rgba(0, 0, 0, 0.9),
+    0 14px 32px rgba(0, 0, 0, 0.7),
+    0 0 28px rgba(0, 0, 0, 0.45),
+    0 0 36px rgba(147, 112, 219, 0.32),
+    0 0 56px rgba(147, 112, 219, 0.22);
 }
 /* ── TASKBAR — floating island ── */
 .taskbar {
