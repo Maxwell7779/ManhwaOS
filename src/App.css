@@ -1345,3 +1345,17 @@
     display: none;
   }
 }
+@media (max-width: 640px) {
+  .floating-search-bar {
+    width: min(260px, 85vw);
+    padding: 8px 14px;
+  }
+
+  .floating-search-bar.open {
+    width: min(300px, 90vw);
+  }
+
+  .floating-search-dropdown {
+    width: min(300px, 90vw);
+  }
+}
