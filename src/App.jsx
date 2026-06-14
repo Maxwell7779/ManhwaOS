@@ -1,17 +1,17 @@
 import { useState, useRef } from "react";
-import Taskbar from "./taskbar";
-import Desktop from "./desktop";
-import Window from "./Window";
-import Dock from "./dock";
-import WelcomeApp from "./welcome";
-import ClockApp from "./clock";
-import ManhwaApp from "./manhwa";
-import AboutApp from "./about";
+import Taskbar from "./components/Taskbar";
+import Desktop from "./components/Desktop";
+import Window from "./components/Window";
+import Dock from "./components/Dock";
+import WelcomeApp from "./apps/Welcome";
+import ClockApp from "./apps/Clock";
+import ManhwaApp from "./apps/Manhwa";
+import AboutApp from "./apps/About";
 import "./App.css";
-import Pet from "./Pet";
-import SearchBar from "./searchBar";
-import VisitorCount from "./visitorCount";
-import BootScreen from "./bootscreen";
+import Pet from "./components/Pet";
+import SearchBar from "./components/SearchBar";
+import VisitorCount from "./components/VisitorCount";
+import BootScreen from "./components/bootscreen";
 
 const APP_REGISTRY = {
   welcome: {
