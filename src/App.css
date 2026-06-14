@@ -984,7 +984,7 @@
 
 .floating-search-wrap {
   position: fixed;
-  top: 76px;
+  top: 64px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 10001;
@@ -1253,6 +1253,17 @@
   .hero-title > div {
     width: min(100%, 90vw);
     padding: 18px 20px;
+  }
+  .hero-title {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    text-align: center;
+    padding: 140px 0 0;
+    z-index: 1;
+    pointer-events: none;
   }
 
   .hero-title h1 {
