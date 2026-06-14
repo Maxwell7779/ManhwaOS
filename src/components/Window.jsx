@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
-const TOPBAR_HEIGHT = 56;
-const DOCK_HEIGHT = 80;
+const TOPBAR_HEIGHT = 52;
+const DOCK_HEIGHT = 90;
 
 export default function Window({
   win,

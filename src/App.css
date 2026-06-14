@@ -287,17 +287,18 @@
   position: absolute;
   display: flex;
   flex-direction: column;
-  background: rgba(8, 10, 28, 0.75);
-  backdrop-filter: blur(20px) saturate(120%);
-  -webkit-backdrop-filter: blur(20px) saturate(120%);
-  border: 0.5px solid rgba(255, 255, 255, 0.08);
+  background: rgba(6, 8, 24, 0.78);
+  backdrop-filter: blur(24px) saturate(130%) hue-rotate(5deg);
+  -webkit-backdrop-filter: blur(24px) saturate(130%) hue-rotate(5deg);
+  border: none;
   border-radius: 16px;
   overflow: hidden;
   min-width: 220px;
   min-height: 160px;
   box-shadow:
     0 32px 80px rgba(0, 0, 0, 0.55),
-    0 1px 0 rgba(255, 255, 255, 0.05) inset;
+    0 0 0 0.5px rgba(255, 255, 255, 0.07),
+    0 1px 0 rgba(255, 255, 255, 0.06) inset;
   transform-origin: center bottom;
   will-change: transform, opacity;
   transition:
@@ -332,16 +333,21 @@
 .win-titlebar {
   height: 38px;
   min-height: 38px;
-  background: rgba(255, 255, 255, 0.035);
+  background: rgba(255, 255, 255, 0.03);
   display: flex;
   align-items: center;
   padding: 0 10px;
   cursor: move;
-  border-bottom: 0.5px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.05);
   flex-shrink: 0;
-  transition:
-    background 0.2s ease,
-    border-color 0.2s ease;
+  transition: background 0.2s ease;
+}
+
+.win-body {
+  flex: 1;
+  overflow: auto;
+  color: rgba(255, 255, 255, 0.85);
+  background: transparent;
 }
 
 .win-btns {
