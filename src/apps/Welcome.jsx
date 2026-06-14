@@ -6,14 +6,14 @@ export default function WelcomeApp() {
       <h2>ManhwaOS</h2>
 
       <p className="welcome-sub">
-        A web desktop for manhwa fans.
+        A webOS for manhwa fans.
         <br />
-        Wallpaper from <em>Omniscient Reader's Viewpoint</em>.
+        Wallpaper from <em>Landscape Visuals aka pinterest</em>.
       </p>
 
       <div className="welcome-quote">
         "I was the only one who knew the ending of this story."
-        <span>— Kim Dokja, ORV</span>
+        <span>— Kim Dokja, ORV, he likes boys</span>
       </div>
 
       <div className="welcome-links">

@@ -12,7 +12,7 @@ export default function Window({
   const [isEntering, setIsEntering] = useState(true);
   const [isClosing, setIsClosing] = useState(false);
   const [isMinimizing, setIsMinimizing] = useState(false);
-
+  const [snapPreview, setSnapPreview] = useState(null);
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => setIsEntering(false));
     return () => window.cancelAnimationFrame(frame);
@@ -56,13 +56,31 @@ export default function Window({
             x: ox + (ev.clientX - startX),
             y: Math.max(72, oy + (ev.clientY - startY)),
           });
+          const vw = window.innerWidth;
+          if (ev.clientX <= 30) {
+            setSnapPreview("left");
+          } else if (ev.clientX >= vw - 30) {
+            setSnapPreview("right");
+          } else {
+            setSnapPreview(null);
+          }
         });
       }
 
-      function onUp() {
+      function onUp(ev) {
         if (raf) window.cancelAnimationFrame(raf);
         window.removeEventListener("mousemove", onMove);
         window.removeEventListener("mouseup", onUp);
+        setSnapPreview(null);
+
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+
+        if (ev.clientX <= 30) {
+          onUpdate({ x: 0, y: 72, width: vw / 2, height: vh - 72 - 80 });
+        } else if (ev.clientX >= vw - 30) {
+          onUpdate({ x: vw / 2, y: 72, width: vw / 2, height: vh - 72 - 80 });
+        }
       }
 
       window.addEventListener("mousemove", onMove);
@@ -143,6 +161,26 @@ export default function Window({
 
         <span className="win-title">{win.title}</span>
       </div>
+
+      {snapPreview && (
+        <div
+          style={{
+            position: "fixed",
+            top: 72,
+            left: snapPreview === "left" ? 0 : "50%",
+            width: "50%",
+            height: "calc(100vh - 72px - 80px)",
+            background: "rgba(255,255,255,0.04)",
+            border: "1px solid rgba(255,255,255,0.18)",
+            borderRadius: 12,
+            pointerEvents: "none",
+            zIndex: 99998,
+            backdropFilter: "blur(2px)",
+            transition: "opacity 0.15s ease",
+            boxShadow: "inset 0 0 40px rgba(255,255,255,0.03)",
+          }}
+        />
+      )}
 
       <div className="win-body">{children}</div>
 

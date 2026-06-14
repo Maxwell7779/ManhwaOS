@@ -18,6 +18,8 @@ import Pet from "./components/pet";
 import SearchBar from "./components/searchBar";
 import VisitorCount from "./components/visitorCount";
 
+import BootScreen from "./components/bootscreen";
+
 const APP_REGISTRY = {
   welcome: {
     title: "Welcome to ManhwaOS",
@@ -39,6 +41,7 @@ const APP_REGISTRY = {
 
 export default function App() {
   const [windows, setWindows] = useState([]);
+  const [booting, setBooting] = useState(true);
   const nextId = useRef(1);
   const nextZ = useRef(100);
 
@@ -190,8 +193,9 @@ export default function App() {
 
   return (
     <div className="os-root">
+      {booting && <BootScreen onDone={() => setBooting(false)} />}
       <div className="wallpaper">
-        <img src="/download.png" alt="" draggable="false" />
+        <img src="/download2.jfif" alt="" draggable="false" />
       </div>
       <div className="wallpaper-overlay" />
       <a
