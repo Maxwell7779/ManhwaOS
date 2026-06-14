@@ -39,27 +39,19 @@ export default function BootScreen({ onDone }) {
 
   return (
     <div className={`boot-root${fading ? " boot-fading" : ""}`}>
-      {/* ── TITLE BLOCK — mirrors .hero-title + .hero-title > div exactly ── */}
       <div className="boot-hero">
         <div className="boot-hero-inner">
           <h1 className="boot-title">ManhwaOS</h1>
           <p className="boot-subtitle">A manhwa lovers hangout spot</p>
         </div>
       </div>
-
-      {/* ── LOADING BLOCK — pinned to bottom 20% like original ── */}
       <div className="boot-loader">
-        {/* Status message */}
         <div className="boot-status">{msgs[msgIdx]}</div>
-
-        {/* Glassmorphic progress pill */}
         <div className="boot-bar-shell">
           <div className="boot-bar-track">
             <div className="boot-bar-fill" style={{ width: `${progress}%` }} />
           </div>
         </div>
-
-        {/* Version */}
         <div className="boot-version">v1.0</div>
       </div>
     </div>

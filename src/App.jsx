@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Taskbar from "./components/Taskbar";
 import Desktop from "./components/Desktop";
 import Window from "./components/Window";
@@ -20,7 +20,6 @@ const APP_REGISTRY = {
     width: 340,
     height: 460,
   },
-
   clock: { title: "Clock", component: ClockApp, width: 220, height: 260 },
   manhwa: {
     title: "Read Manhwa",
@@ -28,7 +27,6 @@ const APP_REGISTRY = {
     width: 320,
     height: 320,
   },
-
   about: { title: "About", component: AboutApp, width: 300, height: 480 },
 };
 
@@ -41,17 +39,14 @@ export default function App() {
   function findOpenPosition(appKey, width, height, existingWindows) {
     const viewportWidth =
       typeof window !== "undefined" ? window.innerWidth : 1280;
-
     const viewportHeight =
       typeof window !== "undefined" ? window.innerHeight : 760;
 
     const clampX = (x) => Math.max(24, Math.min(x, viewportWidth - width - 24));
-
     const clampY = (y) =>
       Math.max(56, Math.min(y, viewportHeight - height - 56));
 
     const centerX = clampX((viewportWidth - width) / 2);
-
     const centerY = clampY((viewportHeight - height) / 2);
 
     const keyOffsets = {
@@ -62,9 +57,7 @@ export default function App() {
     };
 
     const initial = keyOffsets[appKey] || { dx: 0, dy: 0 };
-
     const startX = clampX(centerX + initial.dx);
-
     const startY = clampY(centerY + initial.dy);
 
     const padding = 24;
@@ -140,7 +133,6 @@ export default function App() {
         title: def.title,
         x: pos.x,
         y: pos.y,
-
         width: def.width,
         height: def.height,
         z,
@@ -184,6 +176,13 @@ export default function App() {
     );
   }
 
+  useEffect(() => {
+    if (!booting) {
+      const t = setTimeout(() => openApp("about"), 2000);
+      return () => clearTimeout(t);
+    }
+  }, [booting]);
+
   return (
     <div className="os-root">
       {booting && <BootScreen onDone={() => setBooting(false)} />}
@@ -197,10 +196,8 @@ export default function App() {
         rel="noopener noreferrer"
         className="wallpaper-credit"
       >
-        {" "}
-        © LifeScapes Visual{" "}
+        © LifeScapes Visual
       </a>
-      /* h1 change later */
       <div className="hero-title">
         <div>
           <h1>ManhwaOS</h1>
@@ -230,14 +227,6 @@ export default function App() {
       </Desktop>
       <Pet />
       <VisitorCount />
-      <div className="footer">
-        <p>
-          Made with ❤️ by{" MEEEE "}
-          <a href="https://github.com/ManhwaOS" target="_blank">
-            ManhwaOS Team
-          </a>
-        </p>
-      </div>
       <Dock
         windows={windows}
         onOpenApp={openApp}
