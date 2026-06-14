@@ -29,7 +29,7 @@ const APP_REGISTRY = {
     height: 320,
   },
 
-  about: { title: "About", component: AboutApp, width: 300, height: 260 },
+  about: { title: "About", component: AboutApp, width: 300, height: 480 },
 };
 
 export default function App() {

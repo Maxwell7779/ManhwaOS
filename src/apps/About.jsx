@@ -48,7 +48,7 @@ export default function AboutApp() {
   const [activeIdx, setActiveIdx] = useState(null);
 
   useEffect(() => {
-    const t = setTimeout(() => setVisible(true), 5000);
+    const t = setTimeout(() => setVisible(true), 800);
     return () => clearTimeout(t);
   }, []);
 
