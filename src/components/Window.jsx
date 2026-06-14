@@ -1,5 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
+const TOPBAR_HEIGHT = 56;
+const DOCK_HEIGHT = 80;
+
 export default function Window({
   win,
   children,
@@ -13,13 +16,15 @@ export default function Window({
   const [isClosing, setIsClosing] = useState(false);
   const [isMinimizing, setIsMinimizing] = useState(false);
   const [snapPreview, setSnapPreview] = useState(null);
-  const [touchDragReady, setTouchDragReady] = useState(false);
-  const touchStart = useRef(null);
   const lastTap = useRef(0);
+  const touchStart = useRef(null);
+  const [touchDragReady, setTouchDragReady] = useState(false);
 
   useEffect(() => {
-    const frame = window.requestAnimationFrame(() => setIsEntering(false));
-    return () => window.cancelAnimationFrame(frame);
+    const frame = requestAnimationFrame(() =>
+      requestAnimationFrame(() => setIsEntering(false)),
+    );
+    return () => cancelAnimationFrame(frame);
   }, []);
 
   const handleClose = useCallback(
@@ -27,7 +32,7 @@ export default function Window({
       e.stopPropagation();
       if (isClosing || isMinimizing) return;
       setIsClosing(true);
-      window.setTimeout(onClose, 180);
+      setTimeout(onClose, 280);
     },
     [isClosing, isMinimizing, onClose],
   );
@@ -37,12 +42,11 @@ export default function Window({
       e.stopPropagation();
       if (isClosing || isMinimizing) return;
       setIsMinimizing(true);
-      window.setTimeout(onMinimize, 180);
+      setTimeout(onMinimize, 280);
     },
     [isClosing, isMinimizing, onMinimize],
   );
 
-  // Desktop drag
   const handleDragStart = useCallback(
     (e) => {
       if (e.button !== 0 || win.maximized) return;
@@ -55,13 +59,20 @@ export default function Window({
       let raf = null;
 
       function onMove(ev) {
-        if (raf) window.cancelAnimationFrame(raf);
-        raf = window.requestAnimationFrame(() => {
-          onUpdate({
-            x: ox + (ev.clientX - startX),
-            y: Math.max(72, oy + (ev.clientY - startY)),
-          });
+        if (raf) cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(() => {
           const vw = window.innerWidth;
+          const vh = window.innerHeight;
+          const newX = Math.max(
+            0,
+            Math.min(vw - win.width, ox + (ev.clientX - startX)),
+          );
+          const newY = Math.max(
+            TOPBAR_HEIGHT + 8,
+            Math.min(vh - win.height - DOCK_HEIGHT, oy + (ev.clientY - startY)),
+          );
+          onUpdate({ x: newX, y: newY });
+
           if (ev.clientX <= 30) setSnapPreview("left");
           else if (ev.clientX >= vw - 30) setSnapPreview("right");
           else setSnapPreview(null);
@@ -69,16 +80,26 @@ export default function Window({
       }
 
       function onUp(ev) {
-        if (raf) window.cancelAnimationFrame(raf);
+        if (raf) cancelAnimationFrame(raf);
         window.removeEventListener("mousemove", onMove);
         window.removeEventListener("mouseup", onUp);
         setSnapPreview(null);
         const vw = window.innerWidth;
         const vh = window.innerHeight;
         if (ev.clientX <= 30) {
-          onUpdate({ x: 0, y: 72, width: vw / 2, height: vh - 72 - 80 });
+          onUpdate({
+            x: 0,
+            y: TOPBAR_HEIGHT,
+            width: vw / 2,
+            height: vh - TOPBAR_HEIGHT - DOCK_HEIGHT,
+          });
         } else if (ev.clientX >= vw - 30) {
-          onUpdate({ x: vw / 2, y: 72, width: vw / 2, height: vh - 72 - 80 });
+          onUpdate({
+            x: vw / 2,
+            y: TOPBAR_HEIGHT,
+            width: vw / 2,
+            height: vh - TOPBAR_HEIGHT - DOCK_HEIGHT,
+          });
         }
       }
 
@@ -88,30 +109,20 @@ export default function Window({
     [win, onUpdate, onFocus],
   );
 
-  // Mobile touch drag double-tap titlebar to unlock, then drag
+  // Mobile double-tap to drag
   const handleTitlebarTouch = useCallback(
     (e) => {
       const now = Date.now();
-      const DOUBLE_TAP_MS = 300;
-
-      if (now - lastTap.current < DOUBLE_TAP_MS) {
-        // Double tap — toggle drag mode
-        setTouchDragReady((prev) => !prev);
+      if (now - lastTap.current < 300) {
+        setTouchDragReady((v) => !v);
         lastTap.current = 0;
         return;
       }
       lastTap.current = now;
-
       if (!touchDragReady || win.maximized) return;
-
       onFocus();
       const t = e.touches[0];
-      touchStart.current = {
-        x: t.clientX,
-        y: t.clientY,
-        ox: win.x,
-        oy: win.y,
-      };
+      touchStart.current = { x: t.clientX, y: t.clientY, ox: win.x, oy: win.y };
     },
     [touchDragReady, win, onFocus],
   );
@@ -123,17 +134,18 @@ export default function Window({
       const t = e.touches[0];
       const dx = t.clientX - touchStart.current.x;
       const dy = t.clientY - touchStart.current.y;
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
       onUpdate({
-        x: touchStart.current.ox + dx,
-        y: Math.max(72, touchStart.current.oy + dy),
+        x: Math.max(0, Math.min(vw - win.width, touchStart.current.ox + dx)),
+        y: Math.max(
+          TOPBAR_HEIGHT + 8,
+          Math.min(vh - win.height - DOCK_HEIGHT, touchStart.current.oy + dy),
+        ),
       });
     },
-    [touchDragReady, onUpdate],
+    [touchDragReady, win, onUpdate],
   );
-
-  const handleTouchEnd = useCallback(() => {
-    touchStart.current = null;
-  }, []);
 
   const handleResizeStart = useCallback(
     (e) => {
@@ -146,8 +158,8 @@ export default function Window({
       let raf = null;
 
       function onMove(ev) {
-        if (raf) window.cancelAnimationFrame(raf);
-        raf = window.requestAnimationFrame(() => {
+        if (raf) cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(() => {
           onUpdate({
             width: Math.max(260, ow + (ev.clientX - startX)),
             height: Math.max(180, oh + (ev.clientY - startY)),
@@ -156,7 +168,7 @@ export default function Window({
       }
 
       function onUp() {
-        if (raf) window.cancelAnimationFrame(raf);
+        if (raf) cancelAnimationFrame(raf);
         window.removeEventListener("mousemove", onMove);
         window.removeEventListener("mouseup", onUp);
       }
@@ -169,9 +181,9 @@ export default function Window({
   const style = win.maximized
     ? {
         left: 0,
-        top: 72,
+        top: TOPBAR_HEIGHT,
         width: "100%",
-        height: "calc(100vh - 72px - 80px)",
+        height: `calc(100vh - ${TOPBAR_HEIGHT}px - ${DOCK_HEIGHT}px)`,
         zIndex: win.z,
       }
     : {
@@ -200,12 +212,14 @@ export default function Window({
         onDoubleClick={onToggleMaximize}
         onTouchStart={handleTitlebarTouch}
         onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
+        onTouchEnd={() => {
+          touchStart.current = null;
+        }}
         style={
           touchDragReady
             ? {
-                background: "rgba(147, 112, 219, 0.18)",
-                borderBottom: "0.5px solid rgba(147, 112, 219, 0.3)",
+                background: "rgba(147, 112, 219, 0.15)",
+                borderBottom: "0.5px solid rgba(147, 112, 219, 0.25)",
               }
             : {}
         }
@@ -224,24 +238,20 @@ export default function Window({
         <div
           style={{
             position: "fixed",
-            top: 72,
+            top: TOPBAR_HEIGHT,
             left: snapPreview === "left" ? 0 : "50%",
             width: "50%",
-            height: "calc(100vh - 72px - 80px)",
-            background: "rgba(255,255,255,0.04)",
-            border: "1px solid rgba(255,255,255,0.18)",
+            height: `calc(100vh - ${TOPBAR_HEIGHT}px - ${DOCK_HEIGHT}px)`,
+            background: "rgba(255,255,255,0.03)",
+            border: "1px solid rgba(255,255,255,0.12)",
             borderRadius: 12,
             pointerEvents: "none",
             zIndex: 99998,
-            backdropFilter: "blur(2px)",
-            transition: "opacity 0.15s ease",
-            boxShadow: "inset 0 0 40px rgba(255,255,255,0.03)",
           }}
         />
       )}
 
       <div className="win-body">{children}</div>
-
       {!win.maximized && (
         <div className="win-resize" onMouseDown={handleResizeStart} />
       )}

@@ -1,36 +1,84 @@
+import { useState, useRef } from "react";
+
 export default function Pet() {
+  const [pos, setPos] = useState({ bottom: 90, right: 16 });
+  const dragStart = useRef(null);
+
+  function handleTouchStart(e) {
+    e.preventDefault();
+    const t = e.touches[0];
+    dragStart.current = {
+      x: t.clientX,
+      y: t.clientY,
+      bottom: pos.bottom,
+      right: pos.right,
+    };
+  }
+
+  function handleTouchMove(e) {
+    e.preventDefault();
+    if (!dragStart.current) return;
+    const t = e.touches[0];
+    const dx = t.clientX - dragStart.current.x;
+    const dy = t.clientY - dragStart.current.y;
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    setPos({
+      right: Math.max(8, Math.min(vw - 72, dragStart.current.right - dx)),
+      bottom: Math.max(8, Math.min(vh - 72, dragStart.current.bottom - dy)),
+    });
+  }
+
+  function handleMouseDown(e) {
+    e.preventDefault();
+    dragStart.current = {
+      x: e.clientX,
+      y: e.clientY,
+      bottom: pos.bottom,
+      right: pos.right,
+    };
+    function onMove(ev) {
+      const dx = ev.clientX - dragStart.current.x;
+      const dy = ev.clientY - dragStart.current.y;
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      setPos({
+        right: Math.max(8, Math.min(vw - 72, dragStart.current.right - dx)),
+        bottom: Math.max(8, Math.min(vh - 72, dragStart.current.bottom - dy)),
+      });
+    }
+    function onUp() {
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseup", onUp);
+      dragStart.current = null;
+    }
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseup", onUp);
+  }
+
   return (
-    <div
+    <img
+      src="/gif.gif"
+      alt="pet"
+      onMouseDown={handleMouseDown}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={() => {
+        dragStart.current = null;
+      }}
       style={{
         position: "fixed",
-        bottom: 90,
-        right: 12,
+        bottom: pos.bottom,
+        right: pos.right,
         zIndex: 9000,
-        background: "rgba(255, 255, 255, 0.05)",
-        backdropFilter: "blur(12px) saturate(140%)",
-        WebkitBackdropFilter: "blur(12px) saturate(140%)",
-        border: "1px solid rgba(255, 255, 255, 0.2)",
-        borderRadius: 16,
-        padding: 8,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        boxShadow: "0 8px 24px rgba(0, 0, 0, 0.15)",
-        pointerEvents: "none",
+        width: 64,
+        height: 64,
+        imageRendering: "pixelated",
+        userSelect: "none",
+        cursor: "grab",
+        mixBlendMode: "screen",
+        touchAction: "none",
       }}
-    >
-      <img
-        src="/gif.gif"
-        alt="pet"
-        style={{
-          width: 48,
-          height: 48,
-          imageRendering: "pixelated",
-          userSelect: "none",
-          display: "block",
-          mixBlendMode: "screen",
-        }}
-      />
-    </div>
+    />
   );
 }
