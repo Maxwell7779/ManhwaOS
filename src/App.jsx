@@ -10,7 +10,6 @@ import AboutApp from "./apps/About";
 import "./App.css";
 import Pet from "./components/Pet";
 import SearchBar from "./components/SearchBar";
-import VisitorCount from "./components/VisitorCount";
 import BootScreen from "./components/bootscreen";
 
 const APP_REGISTRY = {
@@ -226,7 +225,6 @@ export default function App() {
         })}
       </Desktop>
       <Pet />
-      <VisitorCount />
       <Dock
         windows={windows}
         onOpenApp={openApp}

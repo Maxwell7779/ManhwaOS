@@ -26,7 +26,14 @@ const SEARCH_APPS = [
 
 function SignalBars({ strength }) {
   return (
-    <span style={{ display: "inline-flex", alignItems: "flex-end", gap: "2px", height: "14px" }}>
+    <span
+      style={{
+        display: "inline-flex",
+        alignItems: "flex-end",
+        gap: "2px",
+        height: "14px",
+      }}
+    >
       {[1, 2, 3, 4].map((i) => (
         <span
           key={i}
@@ -34,7 +41,10 @@ function SignalBars({ strength }) {
             width: "3px",
             borderRadius: "1px",
             height: `${4 + i * 2.5}px`,
-            background: i <= strength ? "rgba(147,112,219,0.9)" : "rgba(255,255,255,0.15)",
+            background:
+              i <= strength
+                ? "rgba(147,112,219,0.9)"
+                : "rgba(255,255,255,0.15)",
           }}
         />
       ))}
@@ -60,8 +70,6 @@ export default function Taskbar({ onOpenApp }) {
   const [duration, setDuration] = useState(0);
   const audioRef = useRef(null);
   const [visitorCount, setVisitorCount] = useState(null);
-
-  // Inline search state (desktop only)
   const [inlineSearchOpen, setInlineSearchOpen] = useState(false);
   const [inlineQuery, setInlineQuery] = useState("");
   const inlineSearchRef = useRef(null);
@@ -88,33 +96,57 @@ export default function Taskbar({ onOpenApp }) {
   }, []);
 
   useEffect(() => {
-    if (inlineSearchOpen && inlineSearchRef.current) inlineSearchRef.current.focus();
+    if (inlineSearchOpen && inlineSearchRef.current)
+      inlineSearchRef.current.focus();
   }, [inlineSearchOpen]);
 
+  // FIXED: single useEffect, try/catch, fallback to "?" so it always shows
   useEffect(() => {
     async function fetchCount() {
-      const { data, error } = await supabase.rpc("increment_visitors");
-      if (!error && data !== null) setVisitorCount(data);
+      try {
+        const { data, error } = await supabase.rpc("increment_visitors");
+        console.log("visitor RPC result:", data, error);
+        if (!error && data !== null) setVisitorCount(data);
+        else setVisitorCount("?");
+      } catch (err) {
+        console.error("Visitor fetch failed:", err);
+        setVisitorCount("?");
+      }
     }
     fetchCount();
   }, []);
 
   function togglePlay() {
     if (!audioRef.current) return;
-    if (playing) { audioRef.current.pause(); setPlaying(false); }
-    else { audioRef.current.play(); setPlaying(true); }
+    if (playing) {
+      audioRef.current.pause();
+      setPlaying(false);
+    } else {
+      audioRef.current.play();
+      setPlaying(true);
+    }
   }
 
   function prevTrack() {
     const idx = (trackIdx - 1 + ORV_TRACKS.length) % ORV_TRACKS.length;
-    setTrackIdx(idx); setPlaying(false); setCurrentTime(0);
-    setTimeout(() => { audioRef.current?.play(); setPlaying(true); }, 50);
+    setTrackIdx(idx);
+    setPlaying(false);
+    setCurrentTime(0);
+    setTimeout(() => {
+      audioRef.current?.play();
+      setPlaying(true);
+    }, 50);
   }
 
   function nextTrack() {
     const idx = (trackIdx + 1) % ORV_TRACKS.length;
-    setTrackIdx(idx); setPlaying(false); setCurrentTime(0);
-    setTimeout(() => { audioRef.current?.play(); setPlaying(true); }, 50);
+    setTrackIdx(idx);
+    setPlaying(false);
+    setCurrentTime(0);
+    setTimeout(() => {
+      audioRef.current?.play();
+      setPlaying(true);
+    }, 50);
   }
 
   function handleSeek(e) {
@@ -126,18 +158,24 @@ export default function Taskbar({ onOpenApp }) {
   }
 
   const filteredApps = SEARCH_APPS.filter((s) =>
-    s.name.toLowerCase().includes(inlineQuery.toLowerCase())
+    s.name.toLowerCase().includes(inlineQuery.toLowerCase()),
   );
 
-  const date = now.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" });
-  const time = now.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
+  const date = now.toLocaleDateString(undefined, {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+  });
+  const time = now.toLocaleTimeString(undefined, {
+    hour: "numeric",
+    minute: "2-digit",
+  });
   const progress = duration ? (currentTime / duration) * 100 : 0;
 
   return (
     <div className="taskbar">
       <span className="taskbar-logo">ManhwaOS</span>
 
-      {/* ── INLINE SEARCH — desktop only, hidden on mobile via CSS ── */}
       <div className="taskbar-search-center" ref={inlineWrapRef}>
         <div
           className={`taskbar-search-bar${inlineSearchOpen ? " open" : ""}`}
@@ -155,7 +193,7 @@ export default function Taskbar({ onOpenApp }) {
                 if (e.key === "Enter" && inlineQuery.trim()) {
                   window.open(
                     `https://mangadex.org/search?q=${encodeURIComponent(inlineQuery.trim())}`,
-                    "_blank"
+                    "_blank",
                   );
                   setInlineSearchOpen(false);
                   setInlineQuery("");
@@ -179,7 +217,10 @@ export default function Taskbar({ onOpenApp }) {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="taskbar-search-result"
-                onClick={() => { setInlineSearchOpen(false); setInlineQuery(""); }}
+                onClick={() => {
+                  setInlineSearchOpen(false);
+                  setInlineQuery("");
+                }}
               >
                 <span>Search "{inlineQuery}" on MangaDex</span>
                 <span style={{ fontSize: 10, opacity: 0.4 }}>↗</span>
@@ -206,13 +247,19 @@ export default function Taskbar({ onOpenApp }) {
         )}
       </div>
 
-      {/* ── RIGHT CLUSTER ── */}
       <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-        <span className="taskbar-clock">{date} · {time}</span>
+        <span className="taskbar-clock">
+          {date} · {time}
+        </span>
 
         {visitorCount !== null && (
           <span className="taskbar-visitor">
-            <span>{visitorCount.toLocaleString()}</span> visitors
+            <span>
+              {typeof visitorCount === "number"
+                ? visitorCount.toLocaleString()
+                : visitorCount}
+            </span>{" "}
+            visitors
           </span>
         )}
 
@@ -220,28 +267,39 @@ export default function Taskbar({ onOpenApp }) {
           <div className="tb-dropdown-wrap">
             <button
               className={`tb-icon-btn${wifiOpen ? " active" : ""}`}
-              onClick={() => { setWifiOpen((o) => !o); setBtOpen(false); }}
+              onClick={() => {
+                setWifiOpen((o) => !o);
+                setBtOpen(false);
+              }}
               title="WiFi"
             >
               <Wifi size={14} />
             </button>
-
             {wifiOpen && (
               <div className="tb-dropdown">
-                <div className="tb-dropdown-header"><Wifi size={14} /> Wi-Fi</div>
-                <div className="tb-dropdown-section-label">AVAILABLE NETWORKS</div>
+                <div className="tb-dropdown-header">
+                  <Wifi size={14} /> Wi-Fi
+                </div>
+                <div className="tb-dropdown-section-label">
+                  AVAILABLE NETWORKS
+                </div>
                 {FAKE_NETWORKS.map((net) => (
                   <button
                     key={net.name}
                     className={`tb-network-row${connectedWifi === net.name ? " connected" : ""}`}
                     onClick={() => setConnectedWifi(net.name)}
                   >
-                    <span className="tb-network-name">{net.secured ? "🔒 " : "🌐 "}{net.name}</span>
+                    <span className="tb-network-name">
+                      {net.secured ? "🔒 " : "🌐 "}
+                      {net.name}
+                    </span>
                     <SignalBars strength={net.strength} />
                   </button>
                 ))}
                 {connectedWifi && (
-                  <div className="tb-dropdown-connected">Connected: <strong>{connectedWifi}</strong></div>
+                  <div className="tb-dropdown-connected">
+                    Connected: <strong>{connectedWifi}</strong>
+                  </div>
                 )}
               </div>
             )}
@@ -250,22 +308,37 @@ export default function Taskbar({ onOpenApp }) {
           <div className="tb-dropdown-wrap">
             <button
               className={`tb-icon-btn${btOpen ? " active" : ""}`}
-              onClick={() => { setBtOpen((o) => !o); setWifiOpen(false); }}
+              onClick={() => {
+                setBtOpen((o) => !o);
+                setWifiOpen(false);
+              }}
               title="Bluetooth"
             >
               <Bluetooth size={14} />
             </button>
             {btOpen && (
               <div className="tb-dropdown tb-dropdown-bt">
-                <div className="tb-dropdown-header"><Bluetooth size={14} /> ORV Soundtrack</div>
+                <div className="tb-dropdown-header">
+                  <Bluetooth size={14} /> ORV Soundtrack
+                </div>
                 <div className="tb-track-info">
-                  <div className="tb-track-title">{ORV_TRACKS[trackIdx].title}</div>
-                  <div className="tb-track-sub">Omniscient Reader's Viewpoint OST</div>
+                  <div className="tb-track-title">
+                    {ORV_TRACKS[trackIdx].title}
+                  </div>
+                  <div className="tb-track-sub">
+                    Omniscient Reader's Viewpoint OST
+                  </div>
                 </div>
                 <div className="tb-progress-wrap" onClick={handleSeek}>
                   <div className="tb-progress-bg">
-                    <div className="tb-progress-fill" style={{ width: `${progress}%` }} />
-                    <div className="tb-progress-thumb" style={{ left: `${progress}%` }} />
+                    <div
+                      className="tb-progress-fill"
+                      style={{ width: `${progress}%` }}
+                    />
+                    <div
+                      className="tb-progress-thumb"
+                      style={{ left: `${progress}%` }}
+                    />
                   </div>
                 </div>
                 <div className="tb-progress-times">
@@ -273,9 +346,18 @@ export default function Taskbar({ onOpenApp }) {
                   <span>{formatTime(duration)}</span>
                 </div>
                 <div className="tb-player-controls">
-                  <button className="tb-ctrl-btn" onClick={prevTrack}>⏮</button>
-                  <button className="tb-ctrl-btn tb-play-btn" onClick={togglePlay}>{playing ? "⏸" : "▶"}</button>
-                  <button className="tb-ctrl-btn" onClick={nextTrack}>⏭</button>
+                  <button className="tb-ctrl-btn" onClick={prevTrack}>
+                    ⏮
+                  </button>
+                  <button
+                    className="tb-ctrl-btn tb-play-btn"
+                    onClick={togglePlay}
+                  >
+                    {playing ? "⏸" : "▶"}
+                  </button>
+                  <button className="tb-ctrl-btn" onClick={nextTrack}>
+                    ⏭
+                  </button>
                 </div>
                 <div className="tb-track-list">
                   {ORV_TRACKS.map((t, i) => (
@@ -283,11 +365,17 @@ export default function Taskbar({ onOpenApp }) {
                       key={t.title}
                       className={`tb-track-row${i === trackIdx ? " active" : ""}`}
                       onClick={() => {
-                        setTrackIdx(i); setPlaying(false); setCurrentTime(0);
-                        setTimeout(() => { audioRef.current?.play(); setPlaying(true); }, 50);
+                        setTrackIdx(i);
+                        setPlaying(false);
+                        setCurrentTime(0);
+                        setTimeout(() => {
+                          audioRef.current?.play();
+                          setPlaying(true);
+                        }, 50);
                       }}
                     >
-                      {i === trackIdx && playing ? "▶ " : "    "}{t.title}
+                      {i === trackIdx && playing ? "▶ " : "    "}
+                      {t.title}
                     </button>
                   ))}
                 </div>
@@ -295,8 +383,12 @@ export default function Taskbar({ onOpenApp }) {
                   ref={audioRef}
                   src={ORV_TRACKS[trackIdx].src}
                   onEnded={nextTrack}
-                  onTimeUpdate={() => setCurrentTime(audioRef.current?.currentTime || 0)}
-                  onLoadedMetadata={() => setDuration(audioRef.current?.duration || 0)}
+                  onTimeUpdate={() =>
+                    setCurrentTime(audioRef.current?.currentTime || 0)
+                  }
+                  onLoadedMetadata={() =>
+                    setDuration(audioRef.current?.duration || 0)
+                  }
                 />
               </div>
             )}
