@@ -8,7 +8,7 @@ import ClockApp from "./apps/clock";
 import ManhwaApp from "./apps/manhwa";
 import AboutApp from "./apps/about";
 import "./App.css";
-import Pet from "./components/pet";
+import Pet from "./components/Pet";
 import SearchBar from "./components/searchBar";
 import VisitorCount from "./components/visitorCount";
 import BootScreen from "./components/bootscreen";
