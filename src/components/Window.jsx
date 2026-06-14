@@ -88,7 +88,7 @@ export default function Window({
     [win, onUpdate, onFocus],
   );
 
-  // Mobile touch drag — double-tap titlebar to unlock, then drag
+  // Mobile touch drag double-tap titlebar to unlock, then drag
   const handleTitlebarTouch = useCallback(
     (e) => {
       const now = Date.now();
