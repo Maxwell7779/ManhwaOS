@@ -1244,130 +1244,128 @@
   color: rgba(255, 255, 255, 0.2);
   letter-spacing: 0.12em;
 }
-
 @media (max-width: 768px) {
   .boot-hero {
     padding: 140px 0 0;
   }
 }
 
-  .hero-title > div {
-    width: min(100%, 90vw);
-    padding: 18px 20px;
-  }
-  .hero-title {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    text-align: center;
-    padding: 140px 0 0;
-    z-index: 1;
-    pointer-events: none;
-  }
+.hero-title > div {
+  width: min(100%, 90vw);
+  padding: 18px 20px;
+}
+.hero-title {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  text-align: center;
+  padding: 140px 0 0;
+  z-index: 1;
+  pointer-events: none;
+}
 
-  .hero-title h1 {
-    font-size: clamp(1.8rem, 10vw, 3rem);
-  }
+.hero-title h1 {
+  font-size: clamp(1.8rem, 10vw, 3rem);
+}
 
-  .hero-title p {
-    font-size: clamp(0.7rem, 3vw, 0.85rem);
-  }
+.hero-title p {
+  font-size: clamp(0.7rem, 3vw, 0.85rem);
+}
 
-  .taskbar {
-    padding: 10px 14px;
-  }
+.taskbar {
+  padding: 10px 14px;
+}
 
-  .taskbar-logo {
-    font-size: 13px;
-  }
+.taskbar-logo {
+  font-size: 13px;
+}
 
-  .taskbar-clock {
-    font-size: 11px;
-  }
+.taskbar-clock {
+  font-size: 11px;
+}
 
-  .taskbar-visitor {
-    display: none;
-  }
+.taskbar-visitor {
+  display: none;
+}
 
-  .taskbar-search-center {
-    max-width: 180px;
-    margin: 0 12px;
-  }
+.taskbar-search-center {
+  max-width: 180px;
+  margin: 0 12px;
+}
 
-  .floating-search-wrap {
-    top: 70px;
-  }
+.floating-search-wrap {
+  top: 70px;
+}
 
-  .floating-search-bar {
-    width: min(280px, 80vw);
-  }
+.floating-search-bar {
+  width: min(280px, 80vw);
+}
 
-  .floating-search-bar.open {
-    width: min(340px, 92vw);
-  }
+.floating-search-bar.open {
+  width: min(340px, 92vw);
+}
 
-  .floating-search-dropdown {
-    width: min(340px, 92vw);
-  }
+.floating-search-dropdown {
+  width: min(340px, 92vw);
+}
 
-  .os-window {
-    min-width: 260px;
-    min-height: 180px;
-  }
+.os-window {
+  min-width: 260px;
+  min-height: 180px;
+}
 
-  .dock {
-    bottom: 12px;
-    padding: 6px 12px;
-    gap: 10px;
-    border-radius: 18px;
-  }
+.dock {
+  bottom: 12px;
+  padding: 6px 12px;
+  gap: 10px;
+  border-radius: 18px;
+}
 
-  .dock-icon-inner {
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
-  }
+.dock-icon-inner {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+}
 
-  .dock-icon-label {
-    font-size: 8px;
-  }
+.dock-icon-label {
+  font-size: 8px;
+}
 
-  .tb-dropdown {
-    width: 240px;
-  }
+.tb-dropdown {
+  width: 240px;
+}
 
-  .tb-dropdown-bt {
-    width: 240px;
-  }
+.tb-dropdown-bt {
+  width: 240px;
+}
 
-  .manhwa-grid {
-    grid-template-columns: 1fr;
-  }
+.manhwa-grid {
+  grid-template-columns: 1fr;
+}
 
-  .boot-hero {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    text-align: center;
-    padding: 140px 0 0;
-    pointer-events: none;
-  }
-  .boot-hero-inner {
-    width: min(100%, 90vw);
-    padding: 18px 20px;
-  }
+.boot-hero {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  text-align: center;
+  padding: 140px 0 0;
+  pointer-events: none;
+}
+.boot-hero-inner {
+  width: min(100%, 90vw);
+  padding: 18px 20px;
+}
 
-  .boot-title {
-    font-size: clamp(1.8rem, 10vw, 3rem);
-  }
+.boot-title {
+  font-size: clamp(1.8rem, 10vw, 3rem);
+}
 
-  .boot-subtitle {
-    font-size: clamp(0.7rem, 3vw, 0.85rem);
-  }
+.boot-subtitle {
+  font-size: clamp(0.7rem, 3vw, 0.85rem);
 }
 
 @media (max-width: 640px) {
