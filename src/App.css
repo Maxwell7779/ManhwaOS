@@ -1246,9 +1246,10 @@
 }
 
 @media (max-width: 768px) {
-  .hero-title {
-    padding: 14vh 0 0;
+  .boot-hero {
+    padding: 140px 0 0;
   }
+}
 
   .hero-title > div {
     width: min(100%, 90vw);
@@ -1346,9 +1347,15 @@
   }
 
   .boot-hero {
-    padding: 14vh 0 0;
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    text-align: center;
+    padding: 140px 0 0;
+    pointer-events: none;
   }
-
   .boot-hero-inner {
     width: min(100%, 90vw);
     padding: 18px 20px;
