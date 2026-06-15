@@ -21,14 +21,14 @@ const APP_REGISTRY = {
     title: "Welcome to ManhwaOS",
     component: WelcomeApp,
     width: 340,
-    height: 460,
+    height: 240,
   },
-  clock: { title: "Clock", component: ClockApp, width: 220, height: 260 },
+  clock: { title: "Clock", component: ClockApp, width: 220, height: 240 },
   manhwa: {
     title: "Read Manhwa",
     component: ManhwaApp,
     width: 320,
-    height: 320,
+    height: 240,
   },
   about: { title: "About", component: AboutApp, width: 300, height: 240 },
 };
