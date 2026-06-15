@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
-const TOPBAR_HEIGHT = 52;
-const DOCK_HEIGHT = 90;
+const TOPBAR_HEIGHT = 60;
+const DOCK_HEIGHT = 120;
 
 export default function Window({
   win,
@@ -11,14 +11,17 @@ export default function Window({
   onToggleMaximize,
   onFocus,
   onUpdate,
+  isObscured,
 }) {
   const [isEntering, setIsEntering] = useState(true);
   const [isClosing, setIsClosing] = useState(false);
   const [isMinimizing, setIsMinimizing] = useState(false);
-  const [snapPreview, setSnapPreview] = useState(null);
+  const [isRestoring, setIsRestoring] = useState(false);
+  const prevMinimized = useRef(win.minimized);
   const lastTap = useRef(0);
   const touchStart = useRef(null);
   const [touchDragReady, setTouchDragReady] = useState(false);
+  const [snapPreview, setSnapPreview] = useState(null);
 
   useEffect(() => {
     const frame = requestAnimationFrame(() =>
@@ -26,6 +29,16 @@ export default function Window({
     );
     return () => cancelAnimationFrame(frame);
   }, []);
+
+  // Detect restore from minimized
+  useEffect(() => {
+    if (prevMinimized.current && !win.minimized) {
+      setIsRestoring(true);
+      const t = setTimeout(() => setIsRestoring(false), 350);
+      return () => clearTimeout(t);
+    }
+    prevMinimized.current = win.minimized;
+  }, [win.minimized]);
 
   const handleClose = useCallback(
     (e) => {
@@ -109,7 +122,6 @@ export default function Window({
     [win, onUpdate, onFocus],
   );
 
-  // Mobile double-tap to drag
   const handleTitlebarTouch = useCallback(
     (e) => {
       const now = Date.now();
@@ -200,12 +212,29 @@ export default function Window({
     isEntering ? "entering" : "",
     isClosing ? "closing" : "",
     isMinimizing ? "minimizing" : "",
+    isRestoring ? "restoring" : "",
   ]
     .filter(Boolean)
     .join(" ");
 
   return (
-    <div className={windowClass} style={style} onMouseDown={onFocus}>
+    <div
+      className={windowClass}
+      style={{
+        ...style,
+        background: isObscured
+          ? "rgba(4, 5, 18, 0.97)"
+          : "rgba(6, 8, 24, 0.78)",
+        backdropFilter: isObscured
+          ? "none"
+          : "blur(24px) saturate(130%) hue-rotate(5deg)",
+        WebkitBackdropFilter: isObscured
+          ? "none"
+          : "blur(24px) saturate(130%) hue-rotate(5deg)",
+        transition: "background 0.3s ease, backdrop-filter 0.3s ease",
+      }}
+      onMouseDown={onFocus}
+    >
       <div
         className="win-titlebar"
         onMouseDown={handleDragStart}

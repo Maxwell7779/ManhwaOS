@@ -12,6 +12,10 @@ import Pet from "./components/Pet";
 import SearchBar from "./components/SearchBar";
 import BootScreen from "./components/bootscreen";
 
+import Leaves from "./components/Leaves";
+
+import GodRays from "./components/GodRays";
+
 const APP_REGISTRY = {
   welcome: {
     title: "Welcome to ManhwaOS",
@@ -29,6 +33,27 @@ const APP_REGISTRY = {
   about: { title: "About", component: AboutApp, width: 300, height: 480 },
 };
 
+function getWindowRect(win) {
+  return { x: win.x, y: win.y, w: win.width, h: win.height };
+}
+
+function rectsOverlap(a, b) {
+  return (
+    a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y
+  );
+}
+
+function isWindowObscured(win, allWindows) {
+  const rect = getWindowRect(win);
+  return allWindows.some(
+    (other) =>
+      other.id !== win.id &&
+      !other.minimized &&
+      other.z > win.z &&
+      rectsOverlap(rect, getWindowRect(other)),
+  );
+}
+
 export default function App() {
   const [windows, setWindows] = useState([]);
   const [booting, setBooting] = useState(true);
@@ -43,7 +68,7 @@ export default function App() {
 
     const clampX = (x) => Math.max(24, Math.min(x, viewportWidth - width - 24));
     const clampY = (y) =>
-      Math.max(56, Math.min(y, viewportHeight - height - 56));
+      Math.max(68, Math.min(y, viewportHeight - height - 120));
 
     const centerX = clampX((viewportWidth - width) / 2);
     const centerY = clampY((viewportHeight - height) / 2);
@@ -52,7 +77,7 @@ export default function App() {
       welcome: { dx: 0, dy: 0 },
       clock: { dx: 260, dy: -120 },
       manhwa: { dx: -260, dy: -10 },
-      about: { dx: 0, dy: 220 },
+      about: { dx: 0, dy: 0 },
     };
 
     const initial = keyOffsets[appKey] || { dx: 0, dy: 0 };
@@ -197,6 +222,7 @@ export default function App() {
       >
         © LifeScapes Visual
       </a>
+
       <div className="hero-title">
         <div>
           <h1>ManhwaOS</h1>
@@ -206,6 +232,8 @@ export default function App() {
       <Taskbar onOpenApp={openApp} />
       <SearchBar onOpenApp={openApp} />
       <Desktop>
+        <Leaves />
+        <GodRays />
         {windows.map((win) => {
           if (win.minimized) return null;
           const { component: AppComponent } = APP_REGISTRY[win.appKey];
@@ -213,6 +241,7 @@ export default function App() {
             <Window
               key={win.id}
               win={win}
+              isObscured={isWindowObscured(win, windows)}
               onClose={() => closeWindow(win.id)}
               onMinimize={() => minimizeWindow(win.id)}
               onToggleMaximize={() => toggleMaximize(win.id)}

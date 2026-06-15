@@ -2,42 +2,34 @@ import { useEffect, useState } from "react";
 
 const TIPS = [
   {
-    icon: "📶",
     title: "Wi-Fi Panel",
     desc: "Tap the WiFi icon in the top bar to open the network panel. Connect to any network — some are more suspicious than others.",
   },
   {
-    icon: "🎵",
     title: "ORV Soundtrack",
     desc: "Tap the Bluetooth icon in the top bar to open the music player. Play, pause, skip, and scrub through the ORV OST.",
   },
   {
-    icon: "🪟",
     title: "Drag & Snap Windows",
     desc: "On desktop, drag any window by its titlebar. Drag to the left or right edge of the screen to snap it to half the screen.",
   },
   {
-    icon: "📱",
     title: "Mobile Drag",
     desc: "On mobile, double-tap a window's titlebar to enter drag mode (it glows purple). Then drag it anywhere. Double-tap again to lock it.",
   },
   {
-    icon: "↔️",
     title: "Resize Windows",
     desc: "On desktop, grab the triangle handle in the bottom-right corner of any window to resize it freely.",
   },
   {
-    icon: "🐾",
     title: "Desktop Pet",
     desc: "The little pixel cat in the corner is draggable. On desktop just click and drag. On mobile just touch and drag it anywhere.",
   },
   {
-    icon: "🔍",
     title: "Search",
     desc: "Use the search bar to open any app instantly, or search for a manhwa title to find it on MangaDex.",
   },
   {
-    icon: "🌌",
     title: "About ManhwaOS",
     desc: "Built with React + Vite. Wallpaper from LifeScapes Visual (ORV). A hangout spot for manhwa fans. v1.0",
   },

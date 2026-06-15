@@ -29,12 +29,11 @@ export default function SearchBar({ onOpenApp }) {
   }, []);
 
   const filtered = SEARCH_APPS.filter((s) =>
-    s.name.toLowerCase().includes(searchQuery.toLowerCase())
+    s.name.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (
-    // floating-search-wrap now has "mobile-only" class — desktop hides it via CSS
-    <div className="floating-search-wrap mobile-only">
+    <div className="floating-search-wrap">
       <div
         className={`floating-search-bar${searchOpen ? " open" : ""}`}
         onClick={() => setSearchOpen(true)}
@@ -51,7 +50,7 @@ export default function SearchBar({ onOpenApp }) {
               if (e.key === "Enter" && searchQuery.trim()) {
                 window.open(
                   `https://mangadex.org/search?q=${encodeURIComponent(searchQuery.trim())}`,
-                  "_blank"
+                  "_blank",
                 );
                 setSearchOpen(false);
                 setSearchQuery("");
@@ -59,7 +58,9 @@ export default function SearchBar({ onOpenApp }) {
             }}
           />
         ) : (
-          <span className="floating-search-placeholder">Search apps or manhwas...</span>
+          <span className="floating-search-placeholder">
+            Search apps or manhwas...
+          </span>
         )}
       </div>
 
@@ -71,7 +72,10 @@ export default function SearchBar({ onOpenApp }) {
               target="_blank"
               rel="noopener noreferrer"
               className="floating-search-result"
-              onClick={() => { setSearchOpen(false); setSearchQuery(""); }}
+              onClick={() => {
+                setSearchOpen(false);
+                setSearchQuery("");
+              }}
             >
               <span>Search "{searchQuery}" on MangaDex</span>
               <span style={{ fontSize: 10, opacity: 0.4 }}>↗</span>

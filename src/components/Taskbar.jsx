@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Wifi, Bluetooth, Search } from "lucide-react";
+import { Wifi, Bluetooth } from "lucide-react";
 import { supabase } from "../lib/supabase";
 
 const FAKE_NETWORKS = [
@@ -15,13 +15,6 @@ const ORV_TRACKS = [
   { title: "LetTheSKyFALLL", src: "/orv1.mp3" },
   { title: "Unknown Track", src: "/orv2.mp3" },
   { title: "Unknown Track", src: "/orv3.mp3" },
-];
-
-const SEARCH_APPS = [
-  { name: "Welcome", key: "welcome" },
-  { name: "Clock", key: "clock" },
-  { name: "Manhwa", key: "manhwa" },
-  { name: "About", key: "about" },
 ];
 
 function SignalBars({ strength }) {
@@ -45,6 +38,7 @@ function SignalBars({ strength }) {
               i <= strength
                 ? "rgba(147,112,219,0.9)"
                 : "rgba(255,255,255,0.15)",
+            transition: "background 0.3s ease",
           }}
         />
       ))}
@@ -59,21 +53,28 @@ function formatTime(sec) {
   return `${m}:${String(s).padStart(2, "0")}`;
 }
 
+function Dropdown({ open, children }) {
+  return (
+    <div
+      className={`tb-dropdown-panel${open ? " tb-dropdown-panel--open" : ""}`}
+    >
+      {children}
+    </div>
+  );
+}
+
 export default function Taskbar({ onOpenApp }) {
   const [now, setNow] = useState(new Date());
   const [wifiOpen, setWifiOpen] = useState(false);
   const [btOpen, setBtOpen] = useState(false);
   const [connectedWifi, setConnectedWifi] = useState(null);
+  const [connectingWifi, setConnectingWifi] = useState(null);
   const [playing, setPlaying] = useState(false);
   const [trackIdx, setTrackIdx] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const audioRef = useRef(null);
   const [visitorCount, setVisitorCount] = useState(null);
-  const [inlineSearchOpen, setInlineSearchOpen] = useState(false);
-  const [inlineQuery, setInlineQuery] = useState("");
-  const inlineSearchRef = useRef(null);
-  const inlineWrapRef = useRef(null);
 
   useEffect(() => {
     const t = setInterval(() => setNow(new Date()), 1000);
@@ -86,35 +87,32 @@ export default function Taskbar({ onOpenApp }) {
         setWifiOpen(false);
         setBtOpen(false);
       }
-      if (inlineWrapRef.current && !inlineWrapRef.current.contains(e.target)) {
-        setInlineSearchOpen(false);
-        setInlineQuery("");
-      }
     }
     document.addEventListener("mousedown", handle);
     return () => document.removeEventListener("mousedown", handle);
   }, []);
 
   useEffect(() => {
-    if (inlineSearchOpen && inlineSearchRef.current)
-      inlineSearchRef.current.focus();
-  }, [inlineSearchOpen]);
-
-  // FIXED: single useEffect, try/catch, fallback to "?" so it always shows
-  useEffect(() => {
     async function fetchCount() {
       try {
         const { data, error } = await supabase.rpc("increment_visitors");
-        console.log("visitor RPC result:", data, error);
         if (!error && data !== null) setVisitorCount(data);
         else setVisitorCount("?");
-      } catch (err) {
-        console.error("Visitor fetch failed:", err);
+      } catch {
         setVisitorCount("?");
       }
     }
     fetchCount();
   }, []);
+
+  function handleConnectWifi(name) {
+    if (connectedWifi === name) return;
+    setConnectingWifi(name);
+    setTimeout(() => {
+      setConnectedWifi(name);
+      setConnectingWifi(null);
+    }, 1200);
+  }
 
   function togglePlay() {
     if (!audioRef.current) return;
@@ -157,10 +155,7 @@ export default function Taskbar({ onOpenApp }) {
     setCurrentTime(x * duration);
   }
 
-  const filteredApps = SEARCH_APPS.filter((s) =>
-    s.name.toLowerCase().includes(inlineQuery.toLowerCase()),
-  );
-
+  const progress = duration ? (currentTime / duration) * 100 : 0;
   const date = now.toLocaleDateString(undefined, {
     weekday: "short",
     month: "short",
@@ -170,82 +165,16 @@ export default function Taskbar({ onOpenApp }) {
     hour: "numeric",
     minute: "2-digit",
   });
-  const progress = duration ? (currentTime / duration) * 100 : 0;
 
   return (
     <div className="taskbar">
-      <span className="taskbar-logo">ManhwaOS</span>
-
-      <div className="taskbar-search-center" ref={inlineWrapRef}>
-        <div
-          className={`taskbar-search-bar${inlineSearchOpen ? " open" : ""}`}
-          onClick={() => setInlineSearchOpen(true)}
-        >
-          <Search size={12} style={{ opacity: 0.4, flexShrink: 0 }} />
-          {inlineSearchOpen ? (
-            <input
-              ref={inlineSearchRef}
-              className="taskbar-search-input"
-              placeholder="Search apps or manhwas..."
-              value={inlineQuery}
-              onChange={(e) => setInlineQuery(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && inlineQuery.trim()) {
-                  window.open(
-                    `https://mangadex.org/search?q=${encodeURIComponent(inlineQuery.trim())}`,
-                    "_blank",
-                  );
-                  setInlineSearchOpen(false);
-                  setInlineQuery("");
-                }
-                if (e.key === "Escape") {
-                  setInlineSearchOpen(false);
-                  setInlineQuery("");
-                }
-              }}
-            />
-          ) : (
-            <span className="taskbar-search-placeholder">Search...</span>
-          )}
-        </div>
-
-        {inlineSearchOpen && (
-          <div className="taskbar-search-dropdown">
-            {inlineQuery.trim() && (
-              <a
-                href={`https://mangadex.org/search?q=${encodeURIComponent(inlineQuery.trim())}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="taskbar-search-result"
-                onClick={() => {
-                  setInlineSearchOpen(false);
-                  setInlineQuery("");
-                }}
-              >
-                <span>Search "{inlineQuery}" on MangaDex</span>
-                <span style={{ fontSize: 10, opacity: 0.4 }}>↗</span>
-              </a>
-            )}
-            {filteredApps.map((app) => (
-              <button
-                key={app.key}
-                className="taskbar-search-result"
-                onClick={() => {
-                  onOpenApp(app.key);
-                  setInlineSearchOpen(false);
-                  setInlineQuery("");
-                }}
-              >
-                <span>{app.name}</span>
-                <span style={{ fontSize: 10, opacity: 0.4 }}>↗</span>
-              </button>
-            ))}
-            {filteredApps.length === 0 && !inlineQuery.trim() && (
-              <div className="taskbar-search-empty">Type to search...</div>
-            )}
-          </div>
-        )}
-      </div>
+      <button
+        className="taskbar-logo taskbar-logo-btn"
+        onClick={() => onOpenApp("welcome")}
+        title="Welcome"
+      >
+        ManhwaOS
+      </button>
 
       <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
         <span className="taskbar-clock">
@@ -264,6 +193,7 @@ export default function Taskbar({ onOpenApp }) {
         )}
 
         <div className="taskbar-icons">
+          {/* WiFi */}
           <div className="tb-dropdown-wrap">
             <button
               className={`tb-icon-btn${wifiOpen ? " active" : ""}`}
@@ -275,52 +205,73 @@ export default function Taskbar({ onOpenApp }) {
             >
               <Wifi size={14} />
             </button>
-            {wifiOpen && (
-              <div className="tb-dropdown">
+
+            <Dropdown open={wifiOpen}>
+              <div className="tb-dropdown tb-dropdown--wifi">
                 <div className="tb-dropdown-header">
-                  <Wifi size={14} /> Wi-Fi
+                  <Wifi size={13} />
+                  <span>Wi-Fi</span>
+                  <span className="tb-header-pill">On</span>
                 </div>
+
+                {connectedWifi && (
+                  <div className="tb-connected-banner">
+                    <span className="tb-connected-dot" />
+                    <span>{connectedWifi}</span>
+                    <span
+                      style={{ marginLeft: "auto", fontSize: 10, opacity: 0.4 }}
+                    >
+                      Connected
+                    </span>
+                  </div>
+                )}
+
                 <div className="tb-dropdown-section-label">
                   AVAILABLE NETWORKS
                 </div>
+
                 {FAKE_NETWORKS.map((net) => (
                   <button
                     key={net.name}
-                    className={`tb-network-row${connectedWifi === net.name ? " connected" : ""}`}
-                    onClick={() => setConnectedWifi(net.name)}
+                    className={`tb-network-row${connectedWifi === net.name ? " connected" : ""}${connectingWifi === net.name ? " connecting" : ""}`}
+                    onClick={() => handleConnectWifi(net.name)}
                   >
                     <span className="tb-network-name">
                       {net.secured ? "🔒 " : "🌐 "}
                       {net.name}
                     </span>
-                    <SignalBars strength={net.strength} />
+                    {connectingWifi === net.name ? (
+                      <span className="tb-spinner" />
+                    ) : (
+                      <SignalBars strength={net.strength} />
+                    )}
                   </button>
                 ))}
-                {connectedWifi && (
-                  <div className="tb-dropdown-connected">
-                    Connected: <strong>{connectedWifi}</strong>
-                  </div>
-                )}
               </div>
-            )}
+            </Dropdown>
           </div>
 
+          {/* Bluetooth / Music */}
           <div className="tb-dropdown-wrap">
             <button
-              className={`tb-icon-btn${btOpen ? " active" : ""}`}
+              className={`tb-icon-btn${btOpen ? " active" : ""}${playing ? " tb-icon-btn--playing" : ""}`}
               onClick={() => {
                 setBtOpen((o) => !o);
                 setWifiOpen(false);
               }}
-              title="Bluetooth"
+              title="Music"
             >
               <Bluetooth size={14} />
+              {playing && <span className="tb-playing-dot" />}
             </button>
-            {btOpen && (
+
+            <Dropdown open={btOpen}>
               <div className="tb-dropdown tb-dropdown-bt">
                 <div className="tb-dropdown-header">
-                  <Bluetooth size={14} /> ORV Soundtrack
+                  <Bluetooth size={13} />
+                  <span>ORV Soundtrack</span>
                 </div>
+
                 <div className="tb-track-info">
                   <div className="tb-track-title">
                     {ORV_TRACKS[trackIdx].title}
@@ -329,6 +280,7 @@ export default function Taskbar({ onOpenApp }) {
                     Omniscient Reader's Viewpoint OST
                   </div>
                 </div>
+
                 <div className="tb-progress-wrap" onClick={handleSeek}>
                   <div className="tb-progress-bg">
                     <div
@@ -341,10 +293,12 @@ export default function Taskbar({ onOpenApp }) {
                     />
                   </div>
                 </div>
+
                 <div className="tb-progress-times">
                   <span>{formatTime(currentTime)}</span>
                   <span>{formatTime(duration)}</span>
                 </div>
+
                 <div className="tb-player-controls">
                   <button className="tb-ctrl-btn" onClick={prevTrack}>
                     ⏮
@@ -359,6 +313,7 @@ export default function Taskbar({ onOpenApp }) {
                     ⏭
                   </button>
                 </div>
+
                 <div className="tb-track-list">
                   {ORV_TRACKS.map((t, i) => (
                     <button
@@ -379,6 +334,7 @@ export default function Taskbar({ onOpenApp }) {
                     </button>
                   ))}
                 </div>
+
                 <audio
                   ref={audioRef}
                   src={ORV_TRACKS[trackIdx].src}
@@ -391,7 +347,7 @@ export default function Taskbar({ onOpenApp }) {
                   }
                 />
               </div>
-            )}
+            </Dropdown>
           </div>
         </div>
       </div>
