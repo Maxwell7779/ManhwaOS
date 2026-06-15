@@ -30,7 +30,7 @@ const APP_REGISTRY = {
     width: 320,
     height: 320,
   },
-  about: { title: "About", component: AboutApp, width: 300, height: 480 },
+  about: { title: "About", component: AboutApp, width: 300, height: 240 },
 };
 
 function getWindowRect(win) {
