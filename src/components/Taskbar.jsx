@@ -169,7 +169,7 @@ export default function Taskbar({ onOpenApp }) {
   return (
     <div className="taskbar">
       <button
-        className="taskbar-logo taskbar-logo-btn"
+        className="taskbar-logo"
         onClick={() => onOpenApp("welcome")}
         title="Welcome"
       >
