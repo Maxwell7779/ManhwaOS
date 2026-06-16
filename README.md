@@ -9,11 +9,14 @@ As much as you can do all of these from any OS out there what we show for you is
 
 Live Demo: https://manhwa-j66x3znvj-maxwell7779s-projects.vercel.app/
 
-Draggable and resizable windows, open multiple apps at once
-Dock with Welcome, Clock, Manhwa, and About apps
-Taskbar with a live clock, Wi-Fi network picker, and ORV OST music player
-Wallpaper from Omniscient Reader's Viewpoint
-Fully responsive, works on mobile too
+FEATURES:
+
+- Searchbar to search manhwa through MangaDex
+- Draggable and resizable windows, open multiple apps at once
+- Dock with Welcome, Clock, Manhwa, and About apps
+- Taskbar with a live clock, Wi-Fi network picker, and ORV OST music player
+- Wallpaper from yunnanea - https://ph.pinterest.com/pin/790452172130301508/
+- Fully responsive, works on mobile too
 
 Run Locally
 
