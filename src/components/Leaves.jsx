@@ -17,7 +17,6 @@ export default function Leaves() {
       leaf.textContent =
         LEAF_EMOJIS[Math.floor(Math.random() * LEAF_EMOJIS.length)];
 
-      // Spawn along the top and left edges only
       const spawnOnTop = Math.random() > 0.5;
       if (spawnOnTop) {
         leaf.style.left = `${Math.random() * 100}vw`;

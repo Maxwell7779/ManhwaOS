@@ -157,9 +157,11 @@ export default function GodRays() {
         left: 0,
         width: "100vw",
         height: "100vh",
+
         pointerEvents: "none",
         zIndex: 1,
         maskImage: `radial-gradient(ellipse 70% 80% at 20% 15%, black 0%, black 20%, rgba(0,0,0,0.6) 40%, rgba(0,0,0,0.15) 60%, transparent 100%)`,
+
         WebkitMaskImage: `radial-gradient(ellipse 70% 80% at 20% 15%, black 0%, black 20%, rgba(0,0,0,0.6) 40%, rgba(0,0,0,0.15) 60%, transparent 100%)`,
       }}
     />
